@@ -13,8 +13,9 @@ for _,device in ipairs(devices) do
 		string.format("pid_%04x", descriptor.idProduct))
 	local handle = device:open()
 	if handle then
-		print('', handle:get_string_descriptor_ascii(descriptor.iManufacturer))
-		print('', handle:get_string_descriptor_ascii(descriptor.iProduct))
+		print('', handle:get_string_descriptor_ascii(descriptor.iManufacturer, 1024))
+		print('', handle:get_string_descriptor_ascii(descriptor.iProduct, 1024))
+	--	print('', handle:get_descriptor(3, descriptor.iManufacturer, 255))
 --		handle:close()
 	end
 end

@@ -610,8 +610,8 @@ BINDING(get_string_descriptor_ascii)
 	
 	dev = luaL_check_device_handle(L, 1);
 	desc_index = (uint8_t)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
+	length = (int)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
 	
-	length = 4*1024;
 	data = lua_newuserdata(L, length);
 	
 	result = libusb_get_string_descriptor_ascii(dev, desc_index, data, length);
@@ -634,8 +634,8 @@ BINDING(get_descriptor)
 	dev = luaL_check_device_handle(L, 1);
 	desc_type = (uint8_t)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
 	desc_index = (uint8_t)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
+	length = (int)luaL_checknumber(L, 4); /* :FIXME: handle overflow */
 	
-	length = 4*1024;
 	data = lua_newuserdata(L, length);
 	
 	result = libusb_get_descriptor(dev, desc_type, desc_index, data, length);
@@ -656,10 +656,10 @@ BINDING(get_string_descriptor)
 	int result;
 	
 	dev = luaL_check_device_handle(L, 1);
-	desc_index = (uint8_t)luaL_checknumber(L, 2);
-	langid = (uint16_t)luaL_checknumber(L, 3);
+	desc_index = (uint8_t)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
+	langid = (uint16_t)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
+	length = (int)luaL_checknumber(L, 4); /* :FIXME: handle overflow */
 	
-	length = 4*1024;
 	data = lua_newuserdata(L, length);
 	
 	result = libusb_get_string_descriptor(dev, desc_index, langid, data, length);
