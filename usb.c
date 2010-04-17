@@ -1,13 +1,15 @@
 #include <lua.h>
 #include <lauxlib.h>
-#include <libusb/libusb.h>
+#include <libusb-1.0/libusb.h>
 
 /****************************************************************************/
 
 static int lua__usberror(lua_State* L, int usberror)
 {
 	lua_pushnil(L);
-	/*
+#ifdef WIN32
+	lua_pushstring(L, libusb_strerror(usberror));
+#else
 	switch (usberror)
 	{
 	case LIBUSB_ERROR_IO: lua_pushstring(L, "io"); break;
@@ -25,8 +27,7 @@ static int lua__usberror(lua_State* L, int usberror)
 	default:
 	case LIBUSB_ERROR_OTHER: lua_pushstring(L, "other"); break;
 	}
-	*/
-	lua_pushstring(L, libusb_strerror(usberror));
+#endif
 	lua_pushnumber(L, usberror);
 	return 3;
 }
@@ -325,7 +326,7 @@ static int lua__libusb_device_handle__gc(lua_State* L)
 
 BINDING(close)
 {
-	luaL_check_device(L, 1);
+	luaL_check_device_handle(L, 1);
 	return lua__libusb_device_handle__gc(L);
 }
 
@@ -617,7 +618,7 @@ BINDING(get_string_descriptor_ascii)
 	if (result < 0)
 		return lua__usberror(L, result);
 	
-	lua_pushlstring(L, data, result);
+	lua_pushlstring(L, (char*)data, result);
 	return 1;
 }
 
@@ -631,8 +632,18 @@ BINDING(get_descriptor)
 	int result;
 	
 	dev = luaL_check_device_handle(L, 1);
+	desc_type = (uint8_t)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
+	desc_index = (uint8_t)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
+	
+	length = 4*1024;
+	data = lua_newuserdata(L, length);
 	
 	result = libusb_get_descriptor(dev, desc_type, desc_index, data, length);
+	if (result < 0)
+		return lua__usberror(L, result);
+	
+	lua_pushlstring(L, (char*)data, result);
+	return 1;
 }
 
 BINDING(get_string_descriptor)
@@ -656,7 +667,7 @@ BINDING(get_string_descriptor)
 		return lua__usberror(L, result);
 	
 	/* :TODO: convert to utf-8 */
-	lua_pushlstring(L, data, length);
+	lua_pushlstring(L, (char*)data, length);
 	return 1;
 }
 
@@ -717,6 +728,7 @@ static struct luaL_Reg libusb_device_handle__methods[] = {
 	BIND(detach_kernel_driver)
 	BIND(attach_kernel_driver)
 	BIND(get_string_descriptor_ascii)
+	BIND(get_descriptor)
 	BIND(get_string_descriptor)
 	{0, 0},
 };

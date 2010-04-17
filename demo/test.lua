@@ -15,9 +15,14 @@ for _,device in ipairs(devices) do
 	if handle then
 		print('', handle:get_string_descriptor_ascii(descriptor.iManufacturer))
 		print('', handle:get_string_descriptor_ascii(descriptor.iProduct))
+--		handle:close()
 	end
 end
 
-context:exit()
+for _,device in ipairs(devices) do
+--	device:unref_device()
+end
+
+--context:exit()
 
 print("all tests passed successfully")
