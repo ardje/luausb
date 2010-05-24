@@ -14,7 +14,7 @@ LDLIBS=-lusb-1.0
 build:usb.$(DLLEXT)
 
 clean:
-	rm -f usb.$(DLLEXT)
+	rm -f usb.$(DLLEXT) *.o enums.c enums.h structs.c structs.h
 
 install:build
 	install -d $(INSTALL_BIN)
@@ -24,6 +24,13 @@ usb.so: CPPFLAGS+=-Dluaopen_module=luaopen_usb
 
 %.$(DLLEXT): %.c
 	$(LINK.c) -shared $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+usb.$(DLLEXT):enums.o structs.o
+
+usb.c:enums.h structs.h
+
+structs.c enums.c enums.h structs.h:gen.lua
+	lua gen.lua
 
 .PHONY:build clean pureinstall install
 

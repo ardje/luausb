@@ -1,2 +1,7 @@
 syntax: glob
+*.o
 *.so
+enums.c
+enums.h
+structs.c
+structs.h
