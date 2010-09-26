@@ -777,15 +777,21 @@ BINDING(interrupt_transfer)
 		return lua__usberror(L, result);
 	
 	/* lua__usberror will push nil and error codes, replace the nil */
-	i = lua__usberror(L, result);
+	if (result < 0)
+		i = lua__usberror(L, result);
 	if (endpoint & LIBUSB_ENDPOINT_IN)
 		/* in endpoint */
 		lua_pushlstring(L, (char*)data, transferred);
 	else
 		/* out endpoint */
 		lua_pushnumber(L, transferred);
-	lua_replace(L, -1-i);
-	return i;
+	if (result < 0)
+	{
+		lua_replace(L, -1-i);
+		return i;
+	}
+	else
+		return 1;
 }
 
 /****************************************************************************/
