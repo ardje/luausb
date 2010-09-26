@@ -750,7 +750,7 @@ BINDING(interrupt_transfer)
 	int transferred;
 	unsigned int timeout;
 	int result;
-	int i;
+	int i = 0;
 	
 	dev_handle = luausb_check_device_handle(L, 1);
 	endpoint = (unsigned char)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
