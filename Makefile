@@ -7,7 +7,7 @@ endif
 PREFIX?=/usr/local
 INSTALL_LUA=$(PREFIX)/share/lua/5.1
 INSTALL_BIN=$(PREFIX)/lib/lua/5.1
-CPPFLAGS=-Wall -O2 '-DLUAMOD_API=__attribute__((visibility("default")))'
+CPPFLAGS=-Wall -Wextra -Werror -O2 '-DLUAMOD_API=__attribute__((visibility("default")))'
 CFLAGS=-fvisibility=hidden -fPIC
 LDLIBS=-lusb-1.0
 
