@@ -14,7 +14,10 @@ LDLIBS=-lusb-1.0
 build:usb.$(DLLEXT)
 
 clean:
-	rm -f usb.$(DLLEXT) *.o enums.c enums.h structs.c structs.h
+	rm -f usb.$(DLLEXT) *.o
+
+cleandist:clean
+	rm -f enums.c enums.h structs.c structs.h
 
 install:build
 	install -d $(INSTALL_BIN)
@@ -32,7 +35,7 @@ usb.c:enums.h structs.h
 structs.c enums.c enums.h structs.h:gen.lua
 	lua gen.lua
 
-.PHONY:build clean pureinstall install
+.PHONY:build clean cleandist pureinstall install
 
 # Copyright (c) 2010 Jérôme Vuarand
 # 
