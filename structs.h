@@ -1,3 +1,4 @@
+/* this is a generated file, see gen.lua */
 #include <lua.h>
 #include <libusb-1.0/libusb.h>
 

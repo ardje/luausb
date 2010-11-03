@@ -1,3 +1,4 @@
+/* this is a generated file, see gen.lua */
 #include "enums.h"
 
 #include <lua.h>

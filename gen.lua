@@ -227,12 +227,14 @@ local structs_h = assert(io.open('structs.h', 'wb'))
 local structs_c = assert(io.open('structs.c', 'wb'))
 
 enums_h:write([[
+/* this is a generated file, see gen.lua */
 #include <lua.h>
 #include <libusb-1.0/libusb.h>
 
 ]])
 
 enums_c:write([[
+/* this is a generated file, see gen.lua */
 #include "enums.h"
 
 #include <lua.h>
@@ -393,12 +395,14 @@ enums_c:write([[
 ]])
 
 structs_h:write([[
+/* this is a generated file, see gen.lua */
 #include <lua.h>
 #include <libusb-1.0/libusb.h>
 
 ]])
 
 structs_c:write([[
+/* this is a generated file, see gen.lua */
 #include "structs.h"
 
 #include <lauxlib.h>

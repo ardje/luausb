@@ -1,3 +1,4 @@
+/* this is a generated file, see gen.lua */
 #include "structs.h"
 
 #include <lauxlib.h>
