@@ -7,7 +7,7 @@ endif
 PREFIX?=/usr/local
 INSTALL_LUA=$(PREFIX)/share/lua/5.1
 INSTALL_BIN=$(PREFIX)/lib/lua/5.1
-CPPFLAGS=-Wall -Wextra -Werror -O2 '-DLUAMOD_API=__attribute__((visibility("default")))'
+CPPFLAGS=-Wall -Wextra -Werror -O2
 CFLAGS=-fvisibility=hidden -fPIC
 LDLIBS=-lusb-1.0
 
@@ -28,7 +28,7 @@ usb.so: CPPFLAGS+=-Dluaopen_module=luaopen_usb
 %.$(DLLEXT): %.c
 	$(LINK.c) -shared $^ $(LOADLIBES) $(LDLIBS) -o $@
 
-usb.$(DLLEXT):enums.o structs.o
+usb.$(DLLEXT):enums.o structs.o compat.o
 
 usb.c:enums.h structs.h
 

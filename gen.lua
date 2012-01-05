@@ -240,6 +240,7 @@ enums_c:write([[
 #include <lua.h>
 #include <lauxlib.h>
 #include <libusb-1.0/libusb.h>
+#include "compat.h"
 
 ]])
 
@@ -258,7 +259,7 @@ enum libusb_]]..cname..[[ luausb_to_]]..cname..[[(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_]]..cname..[[ result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "]]..cname..[[");
+			lua_getfield(L, lua_upvalueindex(1), "]]..cname..[[");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -288,7 +289,7 @@ int luausb_is_]]..cname..[[(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "]]..cname..[[");
+			lua_getfield(L, lua_upvalueindex(1), "]]..cname..[[");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -318,21 +319,21 @@ enum libusb_]]..cname..[[ luausb_check_]]..cname..[[(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_]]..cname..[[ result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "]]..cname..[[");
+			lua_getfield(L, lua_upvalueindex(1), "]]..cname..[[");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_]]..cname..[[");
+				typeerror(L, narg, "enum libusb_]]..cname..[[");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_]]..cname..[[");
+		typeerror(L, narg, "enum libusb_]]..cname..[[");
 		return 0;
 	}
 }
@@ -406,6 +407,7 @@ structs_c:write([[
 #include "structs.h"
 
 #include <lauxlib.h>
+#include "compat.h"
 
 static int luausb_generic_index(lua_State* L)
 {
@@ -493,7 +495,7 @@ void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* 
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -609,12 +611,15 @@ for _,struct in ipairs(structs) do
 structs_c:write([[
 	/* ]]..cname..[[ */
 	luaL_newmetatable(L, "struct libusb_]]..cname..[[");
-	luaL_register(L, 0, libusb_]]..cname..[[__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_]]..cname..[[__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_]]..cname..[[__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_]]..cname..[[__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_]]..cname..[[__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_]]..cname..[[__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "]]..cname..[[");
 	lua_setfield(L, -2, "typename");

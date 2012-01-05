@@ -1316,6 +1316,7 @@ local function dumpdev(dev)
 	local udev = dev:open()
 	if not udev then
 		printf("Couldn't open device, some information will be missing\n")
+		return
 	end
 
 	local descriptor = assert(dev:get_device_descriptor())
@@ -1330,10 +1331,7 @@ local function dumpdev(dev)
 			dump_config(udev, dev:get_config_descriptor(i))
 		end
 	end
-	if not udev then
-		return
-	end
-
+	
 	if descriptor.bDeviceClass == usb.CLASS_HUB then
 		do_hub(udev, descriptor.bDeviceProtocol)
 	end

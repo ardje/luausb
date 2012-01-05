@@ -4,6 +4,7 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <libusb-1.0/libusb.h>
+#include "compat.h"
 
 enum libusb_class_code luausb_to_class_code(lua_State* L, int index)
 {
@@ -14,7 +15,7 @@ enum libusb_class_code luausb_to_class_code(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_class_code result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "class_code");
+			lua_getfield(L, lua_upvalueindex(1), "class_code");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -38,7 +39,7 @@ int luausb_is_class_code(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "class_code");
+			lua_getfield(L, lua_upvalueindex(1), "class_code");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -62,21 +63,21 @@ enum libusb_class_code luausb_check_class_code(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_class_code result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "class_code");
+			lua_getfield(L, lua_upvalueindex(1), "class_code");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_class_code");
+				typeerror(L, narg, "enum libusb_class_code");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_class_code");
+		typeerror(L, narg, "enum libusb_class_code");
 		return 0;
 	}
 }
@@ -98,7 +99,7 @@ enum libusb_descriptor_type luausb_to_descriptor_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_descriptor_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "descriptor_type");
+			lua_getfield(L, lua_upvalueindex(1), "descriptor_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -122,7 +123,7 @@ int luausb_is_descriptor_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "descriptor_type");
+			lua_getfield(L, lua_upvalueindex(1), "descriptor_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -146,21 +147,21 @@ enum libusb_descriptor_type luausb_check_descriptor_type(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_descriptor_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "descriptor_type");
+			lua_getfield(L, lua_upvalueindex(1), "descriptor_type");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_descriptor_type");
+				typeerror(L, narg, "enum libusb_descriptor_type");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_descriptor_type");
+		typeerror(L, narg, "enum libusb_descriptor_type");
 		return 0;
 	}
 }
@@ -182,7 +183,7 @@ enum libusb_endpoint_direction luausb_to_endpoint_direction(lua_State* L, int in
 	case LUA_TSTRING:
 		{
 			enum libusb_endpoint_direction result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "endpoint_direction");
+			lua_getfield(L, lua_upvalueindex(1), "endpoint_direction");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -206,7 +207,7 @@ int luausb_is_endpoint_direction(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "endpoint_direction");
+			lua_getfield(L, lua_upvalueindex(1), "endpoint_direction");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -230,21 +231,21 @@ enum libusb_endpoint_direction luausb_check_endpoint_direction(lua_State* L, int
 	case LUA_TSTRING:
 		{
 			enum libusb_endpoint_direction result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "endpoint_direction");
+			lua_getfield(L, lua_upvalueindex(1), "endpoint_direction");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_endpoint_direction");
+				typeerror(L, narg, "enum libusb_endpoint_direction");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_endpoint_direction");
+		typeerror(L, narg, "enum libusb_endpoint_direction");
 		return 0;
 	}
 }
@@ -266,7 +267,7 @@ enum libusb_transfer_type luausb_to_transfer_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_transfer_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "transfer_type");
+			lua_getfield(L, lua_upvalueindex(1), "transfer_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -290,7 +291,7 @@ int luausb_is_transfer_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "transfer_type");
+			lua_getfield(L, lua_upvalueindex(1), "transfer_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -314,21 +315,21 @@ enum libusb_transfer_type luausb_check_transfer_type(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_transfer_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "transfer_type");
+			lua_getfield(L, lua_upvalueindex(1), "transfer_type");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_transfer_type");
+				typeerror(L, narg, "enum libusb_transfer_type");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_transfer_type");
+		typeerror(L, narg, "enum libusb_transfer_type");
 		return 0;
 	}
 }
@@ -350,7 +351,7 @@ enum libusb_iso_sync_type luausb_to_iso_sync_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_iso_sync_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_sync_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_sync_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -374,7 +375,7 @@ int luausb_is_iso_sync_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_sync_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_sync_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -398,21 +399,21 @@ enum libusb_iso_sync_type luausb_check_iso_sync_type(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_iso_sync_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_sync_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_sync_type");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_iso_sync_type");
+				typeerror(L, narg, "enum libusb_iso_sync_type");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_iso_sync_type");
+		typeerror(L, narg, "enum libusb_iso_sync_type");
 		return 0;
 	}
 }
@@ -434,7 +435,7 @@ enum libusb_iso_usage_type luausb_to_iso_usage_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_iso_usage_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_usage_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_usage_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -458,7 +459,7 @@ int luausb_is_iso_usage_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_usage_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_usage_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -482,21 +483,21 @@ enum libusb_iso_usage_type luausb_check_iso_usage_type(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_iso_usage_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "iso_usage_type");
+			lua_getfield(L, lua_upvalueindex(1), "iso_usage_type");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_iso_usage_type");
+				typeerror(L, narg, "enum libusb_iso_usage_type");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_iso_usage_type");
+		typeerror(L, narg, "enum libusb_iso_usage_type");
 		return 0;
 	}
 }
@@ -518,7 +519,7 @@ enum libusb_standard_request luausb_to_standard_request(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_standard_request result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "standard_request");
+			lua_getfield(L, lua_upvalueindex(1), "standard_request");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -542,7 +543,7 @@ int luausb_is_standard_request(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "standard_request");
+			lua_getfield(L, lua_upvalueindex(1), "standard_request");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -566,21 +567,21 @@ enum libusb_standard_request luausb_check_standard_request(lua_State* L, int nar
 	case LUA_TSTRING:
 		{
 			enum libusb_standard_request result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "standard_request");
+			lua_getfield(L, lua_upvalueindex(1), "standard_request");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_standard_request");
+				typeerror(L, narg, "enum libusb_standard_request");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_standard_request");
+		typeerror(L, narg, "enum libusb_standard_request");
 		return 0;
 	}
 }
@@ -602,7 +603,7 @@ enum libusb_request_type luausb_to_request_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_request_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_type");
+			lua_getfield(L, lua_upvalueindex(1), "request_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -626,7 +627,7 @@ int luausb_is_request_type(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_type");
+			lua_getfield(L, lua_upvalueindex(1), "request_type");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -650,21 +651,21 @@ enum libusb_request_type luausb_check_request_type(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_request_type result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_type");
+			lua_getfield(L, lua_upvalueindex(1), "request_type");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_request_type");
+				typeerror(L, narg, "enum libusb_request_type");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_request_type");
+		typeerror(L, narg, "enum libusb_request_type");
 		return 0;
 	}
 }
@@ -686,7 +687,7 @@ enum libusb_request_recipient luausb_to_request_recipient(lua_State* L, int inde
 	case LUA_TSTRING:
 		{
 			enum libusb_request_recipient result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_recipient");
+			lua_getfield(L, lua_upvalueindex(1), "request_recipient");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -710,7 +711,7 @@ int luausb_is_request_recipient(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_recipient");
+			lua_getfield(L, lua_upvalueindex(1), "request_recipient");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -734,21 +735,21 @@ enum libusb_request_recipient luausb_check_request_recipient(lua_State* L, int n
 	case LUA_TSTRING:
 		{
 			enum libusb_request_recipient result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "request_recipient");
+			lua_getfield(L, lua_upvalueindex(1), "request_recipient");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_request_recipient");
+				typeerror(L, narg, "enum libusb_request_recipient");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_request_recipient");
+		typeerror(L, narg, "enum libusb_request_recipient");
 		return 0;
 	}
 }
@@ -770,7 +771,7 @@ enum libusb_error luausb_to_error(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			enum libusb_error result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "error");
+			lua_getfield(L, lua_upvalueindex(1), "error");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -794,7 +795,7 @@ int luausb_is_error(lua_State* L, int index)
 	case LUA_TSTRING:
 		{
 			int result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "error");
+			lua_getfield(L, lua_upvalueindex(1), "error");
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
@@ -818,21 +819,21 @@ enum libusb_error luausb_check_error(lua_State* L, int narg)
 	case LUA_TSTRING:
 		{
 			enum libusb_error result;
-			lua_getfield(L, LUA_ENVIRONINDEX, "error");
+			lua_getfield(L, lua_upvalueindex(1), "error");
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
 				result = lua_tonumber(L, -1);
 			else
 			{
-				luaL_typerror(L, narg, "enum libusb_error");
+				typeerror(L, narg, "enum libusb_error");
 				return 0;
 			}
 			lua_pop(L, 2);
 			return result;
 		}
 	default:
-		luaL_typerror(L, narg, "enum libusb_error");
+		typeerror(L, narg, "enum libusb_error");
 		return 0;
 	}
 }

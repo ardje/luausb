@@ -2,6 +2,7 @@
 #include "structs.h"
 
 #include <lauxlib.h>
+#include "compat.h"
 
 static int luausb_generic_index(lua_State* L)
 {
@@ -69,7 +70,7 @@ void luausb_push_device_descriptor(lua_State* L, const struct libusb_device_desc
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -246,7 +247,7 @@ void luausb_push_endpoint_descriptor(lua_State* L, const struct libusb_endpoint_
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -383,7 +384,7 @@ void luausb_push_interface_descriptor(lua_State* L, const struct libusb_interfac
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -532,7 +533,7 @@ void luausb_push_interface(lua_State* L, const struct libusb_interface* value, i
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -595,7 +596,7 @@ void luausb_push_config_descriptor(lua_State* L, const struct libusb_config_desc
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -737,7 +738,7 @@ void luausb_push_device(lua_State* L, const struct libusb_device* value, int own
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -790,7 +791,7 @@ void luausb_push_device_handle(lua_State* L, const struct libusb_device_handle* 
 		lua_createtable(L, 1, 0);
 		lua_pushvalue(L, owner);
 		lua_rawseti(L, -2, 1);
-		lua_setfenv(L, -2);
+		setuservalue(L, -2);
 	}
 }
 
@@ -810,84 +811,105 @@ void luausb_init_structs(lua_State* L)
 {
 	/* device_descriptor */
 	luaL_newmetatable(L, "struct libusb_device_descriptor");
-	luaL_register(L, 0, libusb_device_descriptor__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_descriptor__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device_descriptor__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_descriptor__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device_descriptor__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_descriptor__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "device_descriptor");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* endpoint_descriptor */
 	luaL_newmetatable(L, "struct libusb_endpoint_descriptor");
-	luaL_register(L, 0, libusb_endpoint_descriptor__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_endpoint_descriptor__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_endpoint_descriptor__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_endpoint_descriptor__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_endpoint_descriptor__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_endpoint_descriptor__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "endpoint_descriptor");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* interface_descriptor */
 	luaL_newmetatable(L, "struct libusb_interface_descriptor");
-	luaL_register(L, 0, libusb_interface_descriptor__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface_descriptor__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_interface_descriptor__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface_descriptor__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_interface_descriptor__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface_descriptor__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "interface_descriptor");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* interface */
 	luaL_newmetatable(L, "struct libusb_interface");
-	luaL_register(L, 0, libusb_interface__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_interface__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_interface__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_interface__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "interface");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* config_descriptor */
 	luaL_newmetatable(L, "struct libusb_config_descriptor");
-	luaL_register(L, 0, libusb_config_descriptor__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_config_descriptor__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_config_descriptor__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_config_descriptor__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_config_descriptor__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_config_descriptor__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "config_descriptor");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* device */
 	luaL_newmetatable(L, "struct libusb_device");
-	luaL_register(L, 0, libusb_device__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "device");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 	/* device_handle */
 	luaL_newmetatable(L, "struct libusb_device_handle");
-	luaL_register(L, 0, libusb_device_handle__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_handle__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device_handle__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_handle__methods, 1);
 	lua_setfield(L, -2, "methods");
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_device_handle__getters);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_device_handle__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "device_handle");
 	lua_setfield(L, -2, "typename");

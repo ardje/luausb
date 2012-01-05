@@ -2,6 +2,7 @@
 #include <lauxlib.h>
 #include <libusb-1.0/libusb.h>
 #include <string.h>
+#include "compat.h"
 #include "enums.h"
 #include "structs.h"
 
@@ -840,10 +841,6 @@ int luausb_get_config_descriptor_interface(lua_State* L)
 
 /****************************************************************************/
 
-static luaL_Reg empty[] = {
-	{0, 0},
-};
-
 static luaL_Reg functions[] = {
 	BIND(init)
 	{0, 0},
@@ -953,23 +950,33 @@ struct luaL_Reg libusb_endpoint_descriptor__methods[] = {
 
 LUAMOD_API int luaopen_module(lua_State* L)
 {
-	/* module, as environment */
+	/* module */
+#if LUA_VERSION_NUM==502
+	lua_newtable(L);
+#elif LUA_VERSION_NUM==501
+	struct luaL_Reg empty[] = {{0,0}};
 	luaL_register(L, lua_tostring(L, 1), empty);
-	lua_pushvalue(L, -1);
-	lua_replace(L, LUA_ENVIRONINDEX);
+#else
+#error unsupported Lua version
+#endif
+	lua_replace(L, 1); /* code below assumes module is at index 1 */
+	lua_settop(L, 1);
 	/* init enums */
 	luausb_init_enums(L);
 	/* init structs */
 	luausb_init_structs(L);
 	/* context */
 	luaL_newmetatable(L, "libusb_context");
-	luaL_register(L, 0, libusb_context__metamethods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_context__metamethods, 1);
 	lua_newtable(L);
-	luaL_register(L, 0, libusb_context__methods);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_context__methods, 1);
 	lua_setfield(L, -2, "__index");
 	lua_pop(L, 1);
 	/* module functions */
-	luaL_register(L, 0, functions);
-	return 0;
+	lua_pushvalue(L, 1);
+	setfuncs(L, functions, 1);
+	return 1;
 }
 
