@@ -1066,10 +1066,9 @@ local function dump_config(dev, config)
 end
 
 local function dump_device_status(fd, otg, wireless)
-	local status
---	int ret;
+	local status,msg,errno
 
-	status = assert(fd:control_transfer(
+	status,msg,errno = fd:control_transfer(
 			bit.bor(
 				usb.ENDPOINT_IN,
 				usb.REQUEST_TYPE_STANDARD,
@@ -1077,13 +1076,11 @@ local function dump_device_status(fd, otg, wireless)
 			usb.REQUEST_GET_STATUS,
 			0, 0,
 			2,
-			CTRL_TIMEOUT))
---	if (ret < 0) {
---		fprintf(stderr,
---			"cannot read device status, %s (%d)\n",
---			strerror(errno), errno);
---		return;
---	}
+			CTRL_TIMEOUT)
+	if not status then
+		print("cannot read device status, "..msg.." ("..errno..")")
+		return
+	end
 	status = {string.byte(status, 1, #status)}
 
 	printf("Device Status:     0x%02x%02x\n",
