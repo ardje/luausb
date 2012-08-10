@@ -1,6 +1,6 @@
 #include <lua.h>
 #include <lauxlib.h>
-#include <libusbx-1.0/libusb.h>
+#include <libusb-1.0/libusb.h>
 #include <string.h>
 #include "compat.h"
 #include "enums.h"

@@ -1,6 +1,6 @@
 /* this is a generated file, see gen.lua */
 #include <lua.h>
-#include <libusbx-1.0/libusb.h>
+#include <libusb-1.0/libusb.h>
 
 enum libusb_class_code luausb_to_class_code(lua_State* L, int index);
 int luausb_is_class_code(lua_State* L, int index);

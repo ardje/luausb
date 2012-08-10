@@ -229,7 +229,7 @@ local structs_c = assert(io.open('structs.c', 'wb'))
 enums_h:write([[
 /* this is a generated file, see gen.lua */
 #include <lua.h>
-#include <libusbx-1.0/libusb.h>
+#include <libusb-1.0/libusb.h>
 
 ]])
 
@@ -239,7 +239,7 @@ enums_c:write([[
 
 #include <lua.h>
 #include <lauxlib.h>
-#include <libusbx-1.0/libusb.h>
+#include <libusb-1.0/libusb.h>
 #include "compat.h"
 
 ]])
@@ -398,7 +398,7 @@ enums_c:write([[
 structs_h:write([[
 /* this is a generated file, see gen.lua */
 #include <lua.h>
-#include <libusbx-1.0/libusb.h>
+#include <libusb-1.0/libusb.h>
 
 ]])
 
