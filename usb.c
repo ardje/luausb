@@ -1,6 +1,6 @@
 #include <lua.h>
 #include <lauxlib.h>
-#include <libusb-1.0/libusb.h>
+#include <libusbx-1.0/libusb.h>
 #include <string.h>
 #include "compat.h"
 #include "enums.h"
@@ -11,9 +11,6 @@
 static int lua__usberror(lua_State* L, int usberror)
 {
 	lua_pushnil(L);
-#ifdef WIN32
-	lua_pushstring(L, libusb_strerror(usberror));
-#else
 	switch (usberror)
 	{
 	case LIBUSB_ERROR_IO: lua_pushstring(L, "io"); break;
@@ -31,7 +28,6 @@ static int lua__usberror(lua_State* L, int usberror)
 	default:
 	case LIBUSB_ERROR_OTHER: lua_pushstring(L, "other"); break;
 	}
-#endif
 	lua_pushnumber(L, usberror);
 	return 3;
 }

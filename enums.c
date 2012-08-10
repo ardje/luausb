@@ -3,7 +3,7 @@
 
 #include <lua.h>
 #include <lauxlib.h>
-#include <libusb-1.0/libusb.h>
+#include <libusbx-1.0/libusb.h>
 #include "compat.h"
 
 enum libusb_class_code luausb_to_class_code(lua_State* L, int index)
