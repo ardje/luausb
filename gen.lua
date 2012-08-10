@@ -484,8 +484,8 @@ void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* 
 	structs_c:write([[
 void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_]]..cname..[[** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_]]..cname..[[**)lua_newuserdata(L, sizeof(struct libusb_]]..cname..[[*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_]]..cname..[[");

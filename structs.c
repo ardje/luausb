@@ -59,8 +59,8 @@ struct libusb_device_descriptor* luausb_check_device_descriptor(lua_State* L, in
 
 void luausb_push_device_descriptor(lua_State* L, const struct libusb_device_descriptor* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_device_descriptor** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_device_descriptor**)lua_newuserdata(L, sizeof(struct libusb_device_descriptor*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_device_descriptor");
@@ -236,8 +236,8 @@ struct libusb_endpoint_descriptor* luausb_check_endpoint_descriptor(lua_State* L
 
 void luausb_push_endpoint_descriptor(lua_State* L, const struct libusb_endpoint_descriptor* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_endpoint_descriptor** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_endpoint_descriptor**)lua_newuserdata(L, sizeof(struct libusb_endpoint_descriptor*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_endpoint_descriptor");
@@ -373,8 +373,8 @@ struct libusb_interface_descriptor* luausb_check_interface_descriptor(lua_State*
 
 void luausb_push_interface_descriptor(lua_State* L, const struct libusb_interface_descriptor* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_interface_descriptor** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_interface_descriptor**)lua_newuserdata(L, sizeof(struct libusb_interface_descriptor*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_interface_descriptor");
@@ -522,8 +522,8 @@ struct libusb_interface* luausb_check_interface(lua_State* L, int index)
 
 void luausb_push_interface(lua_State* L, const struct libusb_interface* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_interface** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_interface**)lua_newuserdata(L, sizeof(struct libusb_interface*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_interface");
@@ -585,8 +585,8 @@ struct libusb_config_descriptor* luausb_check_config_descriptor(lua_State* L, in
 
 void luausb_push_config_descriptor(lua_State* L, const struct libusb_config_descriptor* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_config_descriptor** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_config_descriptor**)lua_newuserdata(L, sizeof(struct libusb_config_descriptor*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_config_descriptor");
@@ -727,8 +727,8 @@ struct libusb_device* luausb_check_device(lua_State* L, int index)
 
 void luausb_push_device(lua_State* L, const struct libusb_device* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_device** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_device**)lua_newuserdata(L, sizeof(struct libusb_device*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_device");
@@ -780,8 +780,8 @@ struct libusb_device_handle* luausb_check_device_handle(lua_State* L, int index)
 
 void luausb_push_device_handle(lua_State* L, const struct libusb_device_handle* value, int owner)
 {
-	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	const struct libusb_device_handle** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
 	udata = (const struct libusb_device_handle**)lua_newuserdata(L, sizeof(struct libusb_device_handle*));
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_device_handle");
