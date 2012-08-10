@@ -11,23 +11,7 @@
 static int lua__usberror(lua_State* L, int usberror)
 {
 	lua_pushnil(L);
-	switch (usberror)
-	{
-	case LIBUSB_ERROR_IO: lua_pushstring(L, "io"); break;
-	case LIBUSB_ERROR_INVALID_PARAM: lua_pushstring(L, "invalid_param"); break;
-	case LIBUSB_ERROR_ACCESS: lua_pushstring(L, "access"); break;
-	case LIBUSB_ERROR_NO_DEVICE: lua_pushstring(L, "no_device"); break;
-	case LIBUSB_ERROR_NOT_FOUND: lua_pushstring(L, "not_found"); break;
-	case LIBUSB_ERROR_BUSY: lua_pushstring(L, "busy"); break;
-	case LIBUSB_ERROR_TIMEOUT: lua_pushstring(L, "timeout"); break;
-	case LIBUSB_ERROR_OVERFLOW: lua_pushstring(L, "overflow"); break;
-	case LIBUSB_ERROR_PIPE: lua_pushstring(L, "pipe"); break;
-	case LIBUSB_ERROR_INTERRUPTED: lua_pushstring(L, "interrupted"); break;
-	case LIBUSB_ERROR_NO_MEM: lua_pushstring(L, "no_mem"); break;
-	case LIBUSB_ERROR_NOT_SUPPORTED: lua_pushstring(L, "not_supported"); break;
-	default:
-	case LIBUSB_ERROR_OTHER: lua_pushstring(L, "other"); break;
-	}
+	lua_pushstring(L, libusb_error_name(usberror));
 	lua_pushnumber(L, usberror);
 	return 3;
 }
