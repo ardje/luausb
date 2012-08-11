@@ -1,3 +1,7 @@
+ifeq ($(OS),)
+OS=$(shell uname)
+endif
+
 ifeq ($(OS),Windows_NT)
 DLLEXT=dll
 else
@@ -10,6 +14,10 @@ INSTALL_BIN=$(PREFIX)/lib/lua/5.1
 CPPFLAGS=-Wall -Wextra -Werror -O2
 CFLAGS=-fvisibility=hidden -fPIC
 LDLIBS=-lusb-1.0
+
+ifeq ($(OS),Linux)
+CPPFLAGS+=-I/usr/include/libusb-1.0
+endif
 
 build:usb.$(DLLEXT)
 
