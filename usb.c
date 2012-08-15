@@ -775,6 +775,32 @@ BINDING(interrupt_transfer)
 		return 1;
 }
 
+BINDING(cpu_to_le16)
+{
+	uint16_t x;
+	uint16_t result;
+	
+	x = (uint16_t)luaL_checknumber(L, 1); /* :FIXME: handle overflow */
+	
+	result = libusb_cpu_to_le16(x);
+	
+	lua_pushnumber(L, result);
+	return 1;
+}
+
+BINDING(le16_to_cpu)
+{
+	uint16_t x;
+	uint16_t result;
+	
+	x = (uint16_t)luaL_checknumber(L, 1); /* :FIXME: handle overflow */
+	
+	result = libusb_le16_to_cpu(x);
+	
+	lua_pushnumber(L, result);
+	return 1;
+}
+
 /****************************************************************************/
 
 int luausb_get_interface_descriptor_endpoint(lua_State* L)
@@ -823,6 +849,8 @@ int luausb_get_config_descriptor_interface(lua_State* L)
 
 static luaL_Reg functions[] = {
 	BIND(init)
+	BIND(cpu_to_le16)
+	BIND(le16_to_cpu)
 	{0, 0},
 };
 
