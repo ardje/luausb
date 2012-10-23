@@ -12,11 +12,19 @@ PREFIX?=/usr/local
 INSTALL_LUA=$(PREFIX)/share/lua/5.1
 INSTALL_BIN=$(PREFIX)/lib/lua/5.1
 CPPFLAGS=-Wall -Wextra -Werror -O2
-CFLAGS=-fvisibility=hidden -fPIC
-LDLIBS=-lusb-1.0
+CFLAGS=-fvisibility=hidden
 
 ifeq ($(OS),Linux)
 CPPFLAGS+=-I/usr/include/libusb-1.0
+CFLAGS+=-fPIC
+LDLIBS+=-lusb-1.0
+endif
+ifeq ($(OS),Windows_NT)
+ARCH=32
+LIBUSB_DIR=./libusbx-1.0.14-win
+LUABIN_DIR=./lua5_1_4_Win$(ARCH)_dll8_lib
+CPPFLAGS+=-I$(LUABIN_DIR)/include -I$(LIBUSB_DIR)/include/libusbx-1.0 "-DLUAMOD_API=__declspec(dllexport)"
+LDLIBS+=-l:$(LUABIN_DIR)/lua5.1.dll -l:$(LIBUSB_DIR)/MinGW$(ARCH)/dll/libusb-1.0.dll
 endif
 
 build:usb.$(DLLEXT)
@@ -31,7 +39,7 @@ install:build
 	install -d $(INSTALL_BIN)
 	install *.$(DLLEXT) $(INSTALL_BIN)
 
-usb.so: CPPFLAGS+=-Dluaopen_module=luaopen_usb
+usb.$(DLLEXT): CPPFLAGS+=-Dluaopen_module=luaopen_usb
 
 %.$(DLLEXT): %.c
 	$(LINK.c) -shared $^ $(LOADLIBES) $(LDLIBS) -o $@
