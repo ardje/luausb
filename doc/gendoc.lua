@@ -1,6 +1,5 @@
 require 'markdown'
 
-local charset = 'UTF-8'
 local file_index = "index.html"
 
 ------------------------------------------------------------------------------
@@ -15,14 +14,14 @@ end
 
 function header()
 	print([[
-<?xml version="1.0" encoding="]]..charset..[["?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
 lang="en">
 <head>
 <title>luausb @ piratery.net</title>
-<meta http-equiv="Content-Type" content="text/html; charset=]]..charset..[["/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link rel="stylesheet" href="doc.css" type="text/css"/>
 </head>
 <body>
@@ -81,7 +80,7 @@ The name luausb is not original, but it reflects the purpose of the library. The
 
 ## Support
 
-All support is done through the [Lua mailing list](http://www.lua.org/lua-l.html). If the traffic becomes too important a specialized mailing list will be created.
+All support is done through the [Lua mailing list](http://www.lua.org/lua-l.html).
 
 Feel free to ask for further developments. I can't guarantee that I'll develop everything you ask, but I want my code to be as useful as possible, so I'll do my best to help you. You can also send me request or bug reports (for code and documentation) directly at [jerome.vuarand@gmail.com](mailto:jerome.vuarand@gmail.com).
 
@@ -98,7 +97,7 @@ prtr-luausb sources are available in its [Mercurial repository](http://hg.pirate
 
     hg clone http://hg.piratery.net/luausb/
 
-Tarballs of the latest code can be downloaded directly from there: as [gz](http://hg.piratery.net/luausb/archive/tip.tar.gz), [bz2](http://hg.piratery.net/luausb/archive/tip.tar.bz2) or [zip](http://hg.piratery.net/luausb/archive/tip.zip).
+Tarballs of the latest code can be downloaded directly from there: as [gz](http://hg.piratery.net/luausb/get/tip.tar.gz), [bz2](http://hg.piratery.net/luausb/get/tip.tar.bz2) or [zip](http://hg.piratery.net/luausb/get/tip.zip).
 
 Finally, I published some rockspecs:
 
