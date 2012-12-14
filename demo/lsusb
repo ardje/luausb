@@ -2,9 +2,12 @@
 
 package.path = "demo/?.lua;"..package.path
 
-require 'usb'
-require 'names'
-require 'bit'
+local usb = require 'usb'
+local names = require 'names'
+local bit = require 'bit'
+local serial = require 'serial'
+require 'serial.util'
+--require 'util'
 
 names.init("demo/usb.ids")
 
@@ -301,10 +304,6 @@ local function dump_report_desc(b, l)
 		i = i + 1 + bsize
 	end
 end
-
-require 'serial'
-require 'serial.util'
-require 'util'
 
 local tags = serial.util.enum{
 	-- main items
