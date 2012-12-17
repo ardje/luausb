@@ -23,4 +23,7 @@ void luausb_push_device(lua_State* L, const struct libusb_device* value, int own
 struct libusb_device_handle* luausb_to_device_handle(lua_State* L, int index);
 struct libusb_device_handle* luausb_check_device_handle(lua_State* L, int index);
 void luausb_push_device_handle(lua_State* L, const struct libusb_device_handle* value, int owner);
+struct libusb_transfer* luausb_to_transfer(lua_State* L, int index);
+struct libusb_transfer* luausb_check_transfer(lua_State* L, int index);
+void luausb_push_transfer(lua_State* L, const struct libusb_transfer* value, int owner);
 void luausb_init_structs(lua_State* L);

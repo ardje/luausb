@@ -219,6 +219,11 @@ table.insert(structs, {
 	gc = true,
 })
 
+table.insert(structs, {
+	cname = 'transfer',
+	gc = true,
+})
+
 ------------------------------------------------------------------------------
 
 local enums_h = assert(io.open('enums.h', 'wb'))

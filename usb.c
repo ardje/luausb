@@ -807,6 +807,44 @@ BINDING(le16_to_cpu)
 	return 1;
 }
 
+BINDING(alloc_transfer)
+{
+	int iso_packets;
+	struct libusb_transfer* result;
+	
+	iso_packets = (int)luaL_optnumber(L, 1, 0); /* :FIXME: handle overflow */
+	
+	result = libusb_alloc_transfer(iso_packets);
+	if (!result)
+	{
+		lua_pushnil(L);
+		lua_pushstring(L, "allocation error");
+		return 2;
+	}
+	
+	luausb_push_transfer(L, result, 0);
+	return 1;
+}
+
+int luausb_transfer_gc(lua_State* L)
+{
+	struct libusb_transfer** dev;
+	
+	dev = (struct libusb_transfer**)lua_touserdata(L, 1);
+	if (*dev)
+	{
+		libusb_free_transfer(*dev);
+		*dev = 0;
+	}
+	return 0;
+}
+
+BINDING(free_transfer)
+{
+	luausb_check_transfer(L, 1);
+	return luausb_transfer_gc(L);
+}
+
 /****************************************************************************/
 
 int luausb_get_interface_descriptor_endpoint(lua_State* L)
@@ -855,6 +893,7 @@ int luausb_get_config_descriptor_interface(lua_State* L)
 
 static luaL_Reg functions[] = {
 	BIND(init)
+	BIND(alloc_transfer)
 	BIND(cpu_to_le16)
 	BIND(le16_to_cpu)
 	{0, 0},
@@ -957,6 +996,11 @@ struct luaL_Reg libusb_endpoint_descriptor__metamethods[] = {
 };
 */
 struct luaL_Reg libusb_endpoint_descriptor__methods[] = {
+	{0, 0},
+};
+
+struct luaL_Reg libusb_transfer__methods[] = {
+	{"free", lua__libusb_free_transfer},
 	{0, 0},
 };
 

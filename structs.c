@@ -807,6 +807,59 @@ static struct luaL_Reg libusb_device_handle__metamethods[] = {
 };
 extern struct luaL_Reg libusb_device_handle__methods[];
 
+struct libusb_transfer* luausb_to_transfer(lua_State* L, int index)
+{
+	struct libusb_transfer* udata;
+	udata = *(struct libusb_transfer**)lua_touserdata(L, index);
+	if (!udata)
+	{
+		luaL_argerror(L, index, "context has already been deinitialized");
+		return NULL;
+	}
+	return udata;
+}
+
+struct libusb_transfer* luausb_check_transfer(lua_State* L, int index)
+{
+	struct libusb_transfer* udata;
+	udata = *(struct libusb_transfer**)luaL_checkudata(L, index, "struct libusb_transfer");
+	if (!udata)
+	{
+		luaL_argerror(L, index, "context has already been deinitialized");
+		return NULL;
+	}
+	return udata;
+}
+
+void luausb_push_transfer(lua_State* L, const struct libusb_transfer* value, int owner)
+{
+	const struct libusb_transfer** udata;
+	if (owner < 0) owner = lua_gettop(L) + 1 + owner;
+	udata = (const struct libusb_transfer**)lua_newuserdata(L, sizeof(struct libusb_transfer*));
+	*udata = value;
+	luaL_getmetatable(L, "struct libusb_transfer");
+	lua_setmetatable(L, -2);
+	if (owner != 0)
+	{
+		lua_createtable(L, 1, 0);
+		lua_pushvalue(L, owner);
+		lua_rawseti(L, -2, 1);
+		setuservalue(L, -2);
+	}
+}
+
+static struct luaL_Reg libusb_transfer__getters[] = {
+	{0, 0},
+};
+int luausb_transfer_gc(lua_State* L);
+static struct luaL_Reg libusb_transfer__metamethods[] = {
+	{"__index", luausb_generic_index},
+	{"__tostring", luausb_generic_tostring},
+	{"__gc", luausb_transfer_gc},
+	{0, 0},
+};
+extern struct luaL_Reg libusb_transfer__methods[];
+
 void luausb_init_structs(lua_State* L)
 {
 	/* device_descriptor */
@@ -912,6 +965,21 @@ void luausb_init_structs(lua_State* L)
 	setfuncs(L, libusb_device_handle__getters, 1);
 	lua_setfield(L, -2, "getters");
 	lua_pushliteral(L, "device_handle");
+	lua_setfield(L, -2, "typename");
+	lua_pop(L, 1);
+	/* transfer */
+	luaL_newmetatable(L, "struct libusb_transfer");
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_transfer__metamethods, 1);
+	lua_newtable(L);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_transfer__methods, 1);
+	lua_setfield(L, -2, "methods");
+	lua_newtable(L);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_transfer__getters, 1);
+	lua_setfield(L, -2, "getters");
+	lua_pushliteral(L, "transfer");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
 }
