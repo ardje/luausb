@@ -94,7 +94,7 @@ BINDING(get_device_list)
 		luausb_push_device(L, list[i], 1);
 		lua_rawseti(L, -2, (int)i+1);
 	}
-	libusb_free_device_list(list, 0);	
+	libusb_free_device_list(list, 0);
 	return 1;
 }
 
