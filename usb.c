@@ -616,7 +616,7 @@ BINDING(get_string_descriptor)
 		return lua__usberror(L, result);
 	
 	/* :TODO: convert to utf-8 */
-	lua_pushlstring(L, (char*)data, length);
+	lua_pushlstring(L, (char*)data, result);
 	return 1;
 }
 
