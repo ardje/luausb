@@ -581,11 +581,24 @@ static struct luaL_Reg libusb_]]..cname..[[__getters[] = {
 int luausb_]]..cname..[[_gc(lua_State* L);
 ]])
 	end
+	if struct.tostring then
+		structs_c:write([[
+int luausb_]]..cname..[[_tostring(lua_State* L);
+]])
+	end
 	structs_c:write([[
 static struct luaL_Reg libusb_]]..cname..[[__metamethods[] = {
 	{"__index", luausb_generic_index},
+]])
+	if struct.tostring then
+		structs_c:write([[
+	{"__tostring", luausb_]]..cname..[[_tostring},
+]])
+	else
+		structs_c:write([[
 	{"__tostring", luausb_generic_tostring},
 ]])
+	end
 	if struct.gc then
 		structs_c:write([[
 	{"__gc", luausb_]]..cname..[[_gc},
