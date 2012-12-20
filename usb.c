@@ -854,7 +854,7 @@ void luausb_transfer_cb(struct libusb_transfer* transfer)
 	lua_pushvalue(L, -2); /* buffer, callback, transfer, callback */
 	lua_pushvalue(L, -2); /* buffer, callback, transfer, callback, transfer */
 	if (transfer->endpoint & LIBUSB_ENDPOINT_IN)
-		lua_pushlstring(L, transfer->buffer, transfer->actual_length);
+		lua_pushlstring(L, (const char*)transfer->buffer, transfer->actual_length);
 	else
 		lua_pushnumber(L, transfer->actual_length);
 	if (lua_pcall(L, 2, 0, 0))
