@@ -845,86 +845,6 @@ BINDING(free_transfer)
 	return luausb_transfer_gc(L);
 }
 
-void luausb_transfer_cb(struct libusb_transfer* transfer)
-{
-	lua_State* L;
-	
-	L = transfer->user_data; /* buffer, callback, transfer */
-	
-	lua_pushvalue(L, -2); /* buffer, callback, transfer, callback */
-	lua_pushvalue(L, -2); /* buffer, callback, transfer, callback, transfer */
-	if (transfer->endpoint & LIBUSB_ENDPOINT_IN)
-		lua_pushlstring(L, (const char*)transfer->buffer, transfer->actual_length);
-	else
-		lua_pushnumber(L, transfer->actual_length);
-	if (lua_pcall(L, 2, 0, 0))
-	{
-		fprintf(stderr, "%s\n", lua_tostring(L, -1));
-		lua_pop(L, 1);
-	}
-}
-
-BINDING(fill_interrupt_transfer)
-{
-	struct libusb_transfer* transfer;
-	libusb_device_handle* dev_handle;
-	unsigned char endpoint;
-	unsigned char* buffer;
-	int length;
-	libusb_transfer_cb_fn callback;
-	void* user_data;
-	unsigned int timeout;
-	lua_State* thread;
-	
-	transfer = luausb_check_transfer(L, 1);
-	dev_handle = luausb_check_device_handle(L, 2);
-	endpoint = (unsigned char)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
-	if (endpoint & LIBUSB_ENDPOINT_IN)
-		luaL_checknumber(L, 4);
-	else
-		luaL_checkstring(L, 4);
-	luaL_checktype(L, 5, LUA_TFUNCTION);
-	timeout = (unsigned int)luaL_optnumber(L, 6, 0); /* :FIXME: handle overflow */
-	
-	thread = lua_newthread(L);
-	lua_pushlightuserdata(L, thread);
-	lua_insert(L, -2);
-	lua_settable(L, LUA_REGISTRYINDEX);
-	
-	/* extract actual arg 4 value into a buffer on the thread stack */
-	if (endpoint & LIBUSB_ENDPOINT_IN)
-	{
-		/* in endpoint */
-		length = (int)lua_tonumber(L, 4); /* :FIXME: handle overflow */
-		buffer = (unsigned char*)lua_newuserdata(thread, length);
-	}
-	else
-	{
-		/* out endpoint */
-		size_t len;
-		const char* str;
-		str = lua_tolstring(L, 4, &len);
-		length = (int)len; /* :FIXME: handle overflow */
-		buffer = (unsigned char*)lua_newuserdata(thread, length);
-		memcpy(buffer, str, len);
-	}
-	
-	/* copy the callback function onto the thread stack */
-	lua_pushvalue(L, 5);
-	lua_xmove(L, thread, 1);
-	
-	/* copy the transfer object onto the thread stack */
-	lua_pushvalue(L, 1);
-	lua_xmove(L, thread, 1);
-	
-	user_data = thread;
-	callback = luausb_transfer_cb;
-	
-	libusb_fill_interrupt_transfer(transfer, dev_handle, endpoint, buffer, length, callback, user_data, timeout);
-	
-	return 0;
-}
-
 BINDING(submit_transfer)
 {
 	struct libusb_transfer* transfer;
@@ -957,7 +877,10 @@ BINDING(handle_events_completed)
 
 /****************************************************************************/
 
-int luausb_get_interface_descriptor_endpoint(lua_State* L)
+#define GETTER(c, f) int luausb_get_##c##_##f(lua_State* L)
+#define SETTER(c, f) int luausb_set_##c##_##f(lua_State* L)
+
+GETTER(interface_descriptor, endpoint)
 {
 	struct libusb_interface_descriptor* udata;
 	int i;
@@ -971,7 +894,7 @@ int luausb_get_interface_descriptor_endpoint(lua_State* L)
 	return 1;
 }
 
-int luausb_get_interface_altsetting(lua_State* L)
+GETTER(interface, altsetting)
 {
 	struct libusb_interface* udata;
 	int i;
@@ -985,7 +908,7 @@ int luausb_get_interface_altsetting(lua_State* L)
 	return 1;
 }
 
-int luausb_get_config_descriptor_interface(lua_State* L)
+GETTER(config_descriptor, interface)
 {
 	struct libusb_config_descriptor* udata;
 	uint8_t i;
@@ -997,6 +920,102 @@ int luausb_get_config_descriptor_interface(lua_State* L)
 		lua_rawseti(L, -2, i+1);
 	}
 	return 1;
+}
+
+GETTER(transfer, dev_handle)
+{
+	getuservalue(L, 1);
+	lua_getfield(L, -1, "dev_handle");
+	return 1;
+}
+
+SETTER(transfer, dev_handle)
+{
+	struct libusb_transfer* udata;
+	struct libusb_device_handle* value;
+	
+	if (!luausb_is_device_handle(L, 2))
+	{
+		lua_pushliteral(L, "invalid value for field dev_handle (device_handle expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	
+	udata = luausb_to_transfer(L, 1);
+	value = luausb_to_device_handle(L, 2);
+	
+	getuservalue(L, 1);
+	lua_pushvalue(L, 2);
+	lua_setfield(L, -2, "dev_handle");
+	lua_pop(L, 1);
+	
+	udata->dev_handle = value;
+	
+	return 0;
+}
+
+GETTER(transfer, callback)
+{
+	getuservalue(L, 1);
+	lua_getfield(L, -1, "callback");
+	return 1;
+}
+
+static void luausb_transfer_cb(struct libusb_transfer* transfer)
+{
+	lua_State* L;
+	
+	L = transfer->user_data; /* callback, transfer */
+	
+	lua_pushvalue(L, -2); /* callback, transfer, callback */
+	lua_pushvalue(L, -2); /* callback, transfer, callback, transfer */
+	if (transfer->endpoint & LIBUSB_ENDPOINT_IN)
+		lua_pushlstring(L, (const char*)transfer->buffer, transfer->actual_length);
+	else
+		lua_pushnumber(L, transfer->actual_length);
+	if (lua_pcall(L, 2, 0, 0))
+	{
+		fprintf(stderr, "%s\n", lua_tostring(L, -1));
+		lua_pop(L, 1);
+	}
+}
+
+SETTER(transfer, callback)
+{
+	struct libusb_transfer* udata;
+	lua_State* thread;
+	
+	if (lua_type(L, 2) != LUA_TFUNCTION)
+	{
+		lua_pushliteral(L, "invalid value for field callback (function expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	
+	/* create a thread for the callback */
+	getuservalue(L, 1);
+	thread = lua_newthread(L);
+	lua_setfield(L, -2, "callback");
+	lua_pop(L, 1);
+	
+	/* copy the callback function onto the thread stack */
+	lua_pushvalue(L, 2);
+	lua_xmove(L, thread, 1);
+	
+	/* copy the transfer object onto the thread stack */
+	lua_pushvalue(L, 1);
+	lua_xmove(L, thread, 1);
+	
+	/* fill struct members */
+	udata = luausb_to_transfer(L, 1);
+	udata->user_data = thread;
+	udata->callback = luausb_transfer_cb;
+	
+	return 0;
 }
 
 /****************************************************************************/
@@ -1112,7 +1131,6 @@ struct luaL_Reg libusb_endpoint_descriptor__methods[] = {
 
 struct luaL_Reg libusb_transfer__methods[] = {
 	{"free", lua__libusb_free_transfer},
-	{"fill_interrupt", lua__libusb_fill_interrupt_transfer},
 	{"submit", lua__libusb_submit_transfer},
 	{0, 0},
 };

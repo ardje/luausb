@@ -163,7 +163,7 @@ table.insert(structs, {
 		{name='bInterval', ctype='uint8_t', luatype='number'},
 		{name='bRefresh', ctype='uint8_t', luatype='number'},
 		{name='bSynchAddress', ctype='uint8_t', luatype='number'},
-		{name='extra', ctype='const unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
+		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
 })
 
@@ -179,15 +179,15 @@ table.insert(structs, {
 		{name='bInterfaceSubClass', ctype='uint8_t', luatype='number'},
 		{name='bInterfaceProtocol', ctype='uint8_t', luatype='number'},
 		{name='iInterface', ctype='uint8_t', luatype='number'},
-		{name='endpoint', ctype='struct libusb_endpoint_descriptor*'},
-		{name='extra', ctype='const unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
+		{name='endpoint', ctype='struct libusb_endpoint_descriptor*', setter=false},
+		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
 })
 
 table.insert(structs, {
 	cname = 'interface',
 	fields = {
-		{name='altsetting', ctype='struct libusb_interface_descriptor*'},
+		{name='altsetting', ctype='struct libusb_interface_descriptor*', setter=false},
 		{name='num_altsetting', ctype='int', luatype='number'},
 	},
 })
@@ -203,8 +203,8 @@ table.insert(structs, {
 		{name='iConfiguration', ctype='uint8_t', luatype='number'},
 		{name='bmAttributes', ctype='uint8_t', luatype='number'},
 		{name='MaxPower', ctype='uint8_t', luatype='number'},
-		{name='interface', ctype='struct libusb_interface*'},
-		{name='extra', ctype='const unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
+		{name='interface', ctype='struct libusb_interface*', setter=false},
+		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
 	gc = true,
 })
@@ -222,6 +222,21 @@ table.insert(structs, {
 table.insert(structs, {
 	cname = 'transfer',
 	gc = true,
+	fields = {
+		{name='dev_handle'},
+		{name='flags', ctype='uint8_t', luatype='number'},
+		{name='endpoint', ctype='unsigned char', luatype='number'},
+		{name='type', ctype='unsigned char', luatype='number'},
+		{name='timeout', ctype='unsigned int', luatype='number'},
+		{name='status', ctype='enum libusb_transfer_status', luatype='number'},
+	--	{name='length'},
+		{name='actual_length', ctype='int', luatype='number'},
+		{name='callback'},
+	--	{name='user_data'},
+		{name='buffer', ctype='unsigned char*', luatype='string', size='length', size_ctype='int', const=false},
+	--	{name='num_iso_packets'},
+--		{name='iso_packet_desc'},
+	},
 })
 
 ------------------------------------------------------------------------------
@@ -435,6 +450,29 @@ static int luausb_generic_index(lua_State* L)
 	return 1;
 }
 
+static int luausb_generic_newindex(lua_State* L)
+{
+	lua_getmetatable(L, 1);
+	/* get a getter and call it */
+	lua_getfield(L, -1, "setters");
+	lua_pushvalue(L, 2);
+	lua_gettable(L, -2);
+	if (!lua_isnil(L, -1))
+	{
+		lua_pushvalue(L, 1);
+		lua_pushvalue(L, 3);
+		lua_call(L, 2, 1);
+		return 1;
+	}
+	/* throw error */
+	lua_pushliteral(L, "no setter for field ");
+	lua_getglobal(L, "tostring");
+	lua_pushvalue(L, 2);
+	lua_call(L, 1, 1);
+	lua_concat(L, 2);
+	return lua_error(L);
+}
+
 static int luausb_generic_tostring(lua_State* L)
 {
 	lua_getmetatable(L, 1);
@@ -466,9 +504,34 @@ struct libusb_]]..cname..[[* luausb_to_]]..cname..[[(lua_State* L, int index)
 ]])
 	
 	structs_h:write([[
+int luausb_is_]]..cname..[[(lua_State* L, int index);
 struct libusb_]]..cname..[[* luausb_check_]]..cname..[[(lua_State* L, int index);
 ]])
 	structs_c:write([[
+int luausb_is_]]..cname..[[(lua_State* L, int index)
+{
+	int result = 0;
+	void* p = lua_touserdata(L, index);
+	/* value is a userdata? */
+	if (p != NULL)
+	{
+		/* does it have a metatable? */
+		if (lua_getmetatable(L, index))
+		{
+			/* get correct metatable */
+			lua_getfield(L, LUA_REGISTRYINDEX, "struct libusb_]]..cname..[[");
+			/* does it have the correct mt? */
+			if (lua_rawequal(L, -1, -2))
+			{
+				result = 1;
+			}
+			lua_pop(L, 1); /* remove type metatable */
+		}
+		lua_pop(L, 1); /* remove udata metatable */
+	}
+	return result;
+}
+
 struct libusb_]]..cname..[[* luausb_check_]]..cname..[[(lua_State* L, int index)
 {
 	struct libusb_]]..cname..[[* udata;
@@ -495,6 +558,28 @@ void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* 
 	*udata = value;
 	luaL_getmetatable(L, "struct libusb_]]..cname..[[");
 	lua_setmetatable(L, -2);
+]])
+	local refs_needed = false
+	if struct.fields then
+		for _,field in ipairs(struct.fields) do
+			if field.luatype=='string' then
+				refs_needed = true
+				break
+			end
+		end
+	end
+	if refs_needed then
+		structs_c:write([[
+	lua_createtable(L, 1, 0);
+	if (owner != 0)
+	{
+		lua_pushvalue(L, owner);
+		lua_rawseti(L, -2, 1);
+	}
+	setuservalue(L, -2);
+]])
+	else
+		structs_c:write([[
 	if (owner != 0)
 	{
 		lua_createtable(L, 1, 0);
@@ -502,11 +587,14 @@ void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* 
 		lua_rawseti(L, -2, 1);
 		setuservalue(L, -2);
 	}
+]])
+	end
+	structs_c:write([[
 }
 
 ]])
 
-	-- getters
+	-- getters/setters
 	if struct.fields then
 		for _,field in ipairs(struct.fields) do
 			if field.luatype=='number' then
@@ -519,8 +607,30 @@ static int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L)
 	return 1;
 }
 
+static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
+{
+	struct libusb_]]..cname..[[* udata;
+	lua_Number value;
+	if (!lua_isnumber(L, 2))
+	{
+		lua_pushliteral(L, "invalid value for field ]]..field.name..[[ (]]..field.luatype..[[ expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	udata = luausb_to_]]..cname..[[(L, 1);
+	value = lua_tonumber(L, 2);
+	udata->]]..field.name..[[ = (]]..field.ctype..[[)value;
+	return 0;
+}
+
 ]])
 			elseif field.luatype=='string' then
+				local ctype = field.ctype
+				if field.const then
+					ctype = 'const '..ctype
+				end
 				structs_c:write([[
 static int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L)
 {
@@ -532,10 +642,6 @@ static int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L)
 				if type(field.size)=='string' then
 					structs_c:write([[
 		lua_pushlstring(L, (const char*)udata->]]..field.name..[[, udata->]]..field.size..[[);
-]])
-				elseif type(field.size)=='number' then
-					structs_c:write([[
-		lua_pushlstring(L, (const char*)udata->]]..field.name..[[, ]]..field.size..[[);
 ]])
 				elseif type(field.size)=='nil' then
 					structs_c:write([[
@@ -552,9 +658,114 @@ static int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L)
 }
 
 ]])
+				if field.const and type(field.size)=='string' then
+					structs_c:write([[
+static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
+{
+	struct libusb_]]..cname..[[* udata;
+	if (!lua_isstring(L, 2))
+	{
+		lua_pushliteral(L, "invalid value for field ]]..field.name..[[ (]]..field.luatype..[[ expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	udata = luausb_to_]]..cname..[[(L, 1);
+	getuservalue(L, 1);
+	lua_pushvalue(L, 2);
+	lua_setfield(L, -2, "]]..field.name..[[");
+	lua_pop(L, 1);
+	{
+		size_t size;
+		udata->]]..field.name..[[ = lua_tolstring(L, 2, &size);
+		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
+	}
+	return 0;
+}
+]])
+				elseif field.const and type(field.size)=='nil' then
+					structs_c:write([[
+static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
+{
+	struct libusb_]]..cname..[[* udata;
+	if (!lua_isstring(L, 2))
+	{
+		lua_pushliteral(L, "invalid value for field ]]..field.name..[[ (]]..field.luatype..[[ expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	udata = luausb_to_]]..cname..[[(L, 1);
+	getuservalue(L, 1);
+	lua_pushvalue(L, 2);
+	lua_setfield(L, -2, "]]..field.name..[[");
+	lua_pop(L, 1);
+	udata->]]..field.name..[[ = lua_tostring(L, 2);
+	return 0;
+}
+]])
+				elseif not field.const and type(field.size)=='string' then
+					structs_c:write([[
+static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
+{
+	struct libusb_]]..cname..[[* udata;
+	udata = luausb_to_]]..cname..[[(L, 1);
+	if (lua_type(L, 2)==LUA_TSTRING)
+	{
+		const char* value;
+		size_t size;
+		char* buffer;
+		value = lua_tolstring(L, 2, &size);
+		getuservalue(L, 1);
+		buffer = lua_newuserdata(L, size);
+		lua_setfield(L, -2, "]]..field.name..[[");
+		lua_pop(L, 1);
+		memcpy(buffer, value, size);
+		udata->]]..field.name..[[ = buffer;
+		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
+	}
+	else if (lua_type(L, 2)==LUA_TNUMBER)
+	{
+		size_t size;
+		char* buffer;
+		size = (size_t)lua_tonumber(L, 2); /* :FIXME: handle overflow */
+		getuservalue(L, 1);
+		buffer = lua_newuserdata(L, size);
+		lua_setfield(L, -2, "]]..field.name..[[");
+		lua_pop(L, 1);
+		memset(buffer, 0, size);
+		udata->]]..field.name..[[ = buffer;
+		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
+	}
+	else
+	{
+		lua_pushliteral(L, "invalid value for field ]]..field.name..[[ (string or number expected, got ");
+		lua_pushstring(L, luaL_typename(L, 2));
+		lua_pushliteral(L, ")");
+		lua_concat(L, 3);
+		return lua_error(L);
+	}
+	return 0;
+}
+]])
+				else
+					error("unsupported field size for "..cname.."."..field.name)
+				end
+				structs_c:write([[
+
+]])
 			else
 				structs_c:write([[
 int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L);
+]])
+				if field.setter ~= false then
+					structs_c:write([[
+int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L);
+]])
+				end
+				structs_c:write([[
 
 ]])
 			end
@@ -568,6 +779,21 @@ static struct luaL_Reg libusb_]]..cname..[[__getters[] = {
 			structs_c:write([[
 	{"]]..field.name..[[", luausb_get_]]..cname..[[_]]..field.name..[[},
 ]])
+		end
+	end
+	structs_c:write([[
+	{0, 0},
+};
+
+static struct luaL_Reg libusb_]]..cname..[[__setters[] = {
+]])
+	if struct.fields then
+		for _,field in ipairs(struct.fields) do
+			if field.setter ~= false then
+				structs_c:write([[
+	{"]]..field.name..[[", luausb_set_]]..cname..[[_]]..field.name..[[},
+]])
+			end
 		end
 	end
 	structs_c:write([[
@@ -589,6 +815,7 @@ int luausb_]]..cname..[[_tostring(lua_State* L);
 	structs_c:write([[
 static struct luaL_Reg libusb_]]..cname..[[__metamethods[] = {
 	{"__index", luausb_generic_index},
+	{"__newindex", luausb_generic_newindex},
 ]])
 	if struct.tostring then
 		structs_c:write([[
@@ -639,6 +866,10 @@ structs_c:write([[
 	lua_pushvalue(L, 1);
 	setfuncs(L, libusb_]]..cname..[[__getters, 1);
 	lua_setfield(L, -2, "getters");
+	lua_newtable(L);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_]]..cname..[[__setters, 1);
+	lua_setfield(L, -2, "setters");
 	lua_pushliteral(L, "]]..cname..[[");
 	lua_setfield(L, -2, "typename");
 	lua_pop(L, 1);
