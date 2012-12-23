@@ -2,6 +2,7 @@
 #include "structs.h"
 
 #include <lauxlib.h>
+#include <string.h>
 #include "compat.h"
 
 static int luausb_generic_index(lua_State* L)
@@ -832,7 +833,7 @@ static int luausb_set_endpoint_descriptor_extra(lua_State* L)
 	lua_pop(L, 1);
 	{
 		size_t size;
-		udata->extra = lua_tolstring(L, 2, &size);
+		udata->extra = (const unsigned char*)lua_tolstring(L, 2, &size);
 		udata->extra_length = (int)size;
 	}
 	return 0;
@@ -1203,7 +1204,7 @@ static int luausb_set_interface_descriptor_extra(lua_State* L)
 	lua_pop(L, 1);
 	{
 		size_t size;
-		udata->extra = lua_tolstring(L, 2, &size);
+		udata->extra = (const unsigned char*)lua_tolstring(L, 2, &size);
 		udata->extra_length = (int)size;
 	}
 	return 0;
@@ -1662,7 +1663,7 @@ static int luausb_set_config_descriptor_extra(lua_State* L)
 	lua_pop(L, 1);
 	{
 		size_t size;
-		udata->extra = lua_tolstring(L, 2, &size);
+		udata->extra = (const unsigned char*)lua_tolstring(L, 2, &size);
 		udata->extra_length = (int)size;
 	}
 	return 0;
@@ -2123,7 +2124,7 @@ static int luausb_set_transfer_buffer(lua_State* L)
 		lua_setfield(L, -2, "buffer");
 		lua_pop(L, 1);
 		memcpy(buffer, value, size);
-		udata->buffer = buffer;
+		udata->buffer = (unsigned char*)buffer;
 		udata->length = (int)size;
 	}
 	else if (lua_type(L, 2)==LUA_TNUMBER)
@@ -2136,7 +2137,7 @@ static int luausb_set_transfer_buffer(lua_State* L)
 		lua_setfield(L, -2, "buffer");
 		lua_pop(L, 1);
 		memset(buffer, 0, size);
-		udata->buffer = buffer;
+		udata->buffer = (unsigned char*)buffer;
 		udata->length = (int)size;
 	}
 	else

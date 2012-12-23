@@ -427,6 +427,7 @@ structs_c:write([[
 #include "structs.h"
 
 #include <lauxlib.h>
+#include <string.h>
 #include "compat.h"
 
 static int luausb_generic_index(lua_State* L)
@@ -678,7 +679,7 @@ static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
 	lua_pop(L, 1);
 	{
 		size_t size;
-		udata->]]..field.name..[[ = lua_tolstring(L, 2, &size);
+		udata->]]..field.name..[[ = (const ]]..field.ctype..[[)lua_tolstring(L, 2, &size);
 		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
 	}
 	return 0;
@@ -723,7 +724,7 @@ static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
 		lua_setfield(L, -2, "]]..field.name..[[");
 		lua_pop(L, 1);
 		memcpy(buffer, value, size);
-		udata->]]..field.name..[[ = buffer;
+		udata->]]..field.name..[[ = (]]..field.ctype..[[)buffer;
 		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
 	}
 	else if (lua_type(L, 2)==LUA_TNUMBER)
@@ -736,7 +737,7 @@ static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
 		lua_setfield(L, -2, "]]..field.name..[[");
 		lua_pop(L, 1);
 		memset(buffer, 0, size);
-		udata->]]..field.name..[[ = buffer;
+		udata->]]..field.name..[[ = (]]..field.ctype..[[)buffer;
 		udata->]]..field.size..[[ = (]]..field.size_ctype..[[)size;
 	}
 	else
