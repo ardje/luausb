@@ -130,6 +130,19 @@ table.insert(enums, {
 	},
 })
 
+table.insert(enums, {
+	cname = 'transfer_status',
+	values = {
+		TRANSFER_COMPLETED = 'completed',
+		TRANSFER_ERROR = 'error',
+		TRANSFER_TIMED_OUT = 'out',
+		TRANSFER_CANCELLED = 'cancelled',
+		TRANSFER_STALL = 'stall',
+		TRANSFER_NO_DEVICE = 'device',
+		TRANSFER_OVERFLOW = 'overflow',
+	},
+})
+
 ------------------------------------------------------------------------------
 
 table.insert(structs, {

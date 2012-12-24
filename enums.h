@@ -42,4 +42,8 @@ enum libusb_error luausb_to_error(lua_State* L, int index);
 int luausb_is_error(lua_State* L, int index);
 enum libusb_error luausb_check_error(lua_State* L, int narg);
 enum libusb_error luausb_opt_error(lua_State* L, int narg, enum libusb_error d);
+enum libusb_transfer_status luausb_to_transfer_status(lua_State* L, int index);
+int luausb_is_transfer_status(lua_State* L, int index);
+enum libusb_transfer_status luausb_check_transfer_status(lua_State* L, int narg);
+enum libusb_transfer_status luausb_opt_transfer_status(lua_State* L, int narg, enum libusb_transfer_status d);
 void luausb_init_enums(lua_State* L);

@@ -846,6 +846,90 @@ enum libusb_error luausb_opt_error(lua_State* L, int narg, enum libusb_error d)
 		return luausb_check_error(L, narg);
 }
 
+enum libusb_transfer_status luausb_to_transfer_status(lua_State* L, int index)
+{
+	switch (lua_type(L, index))
+	{
+	case LUA_TNUMBER:
+		return lua_tonumber(L, index);
+	case LUA_TSTRING:
+		{
+			enum libusb_transfer_status result;
+			lua_getfield(L, lua_upvalueindex(1), "transfer_status");
+			lua_pushvalue(L, index);
+			lua_gettable(L, -2);
+			if (lua_type(L, -1)==LUA_TNUMBER)
+				result = lua_tonumber(L, -1);
+			else
+				result = 0;
+			lua_pop(L, 2);
+			return result;
+		}
+	default:
+		return 0;
+	}
+}
+
+int luausb_is_transfer_status(lua_State* L, int index)
+{
+	switch (lua_type(L, index))
+	{
+	case LUA_TNUMBER:
+		return 1;
+	case LUA_TSTRING:
+		{
+			int result;
+			lua_getfield(L, lua_upvalueindex(1), "transfer_status");
+			lua_pushvalue(L, index);
+			lua_gettable(L, -2);
+			if (lua_type(L, -1)==LUA_TNUMBER)
+				result = 1;
+			else
+				result = 0;
+			lua_pop(L, 2);
+			return result;
+		}
+	default:
+		return 0;
+	}
+}
+
+enum libusb_transfer_status luausb_check_transfer_status(lua_State* L, int narg)
+{
+	switch (lua_type(L, narg))
+	{
+	case LUA_TNUMBER:
+		return lua_tonumber(L, narg);
+	case LUA_TSTRING:
+		{
+			enum libusb_transfer_status result;
+			lua_getfield(L, lua_upvalueindex(1), "transfer_status");
+			lua_pushvalue(L, narg);
+			lua_gettable(L, -2);
+			if (lua_type(L, -1)==LUA_TNUMBER)
+				result = lua_tonumber(L, -1);
+			else
+			{
+				typeerror(L, narg, "enum libusb_transfer_status");
+				return 0;
+			}
+			lua_pop(L, 2);
+			return result;
+		}
+	default:
+		typeerror(L, narg, "enum libusb_transfer_status");
+		return 0;
+	}
+}
+
+enum libusb_transfer_status luausb_opt_transfer_status(lua_State* L, int narg, enum libusb_transfer_status d)
+{
+	if (lua_isnoneornil(L, narg))
+		return d;
+	else
+		return luausb_check_transfer_status(L, narg);
+}
+
 void luausb_init_enums(lua_State* L)
 {
 	/* ..., env */
@@ -915,6 +999,13 @@ void luausb_init_enums(lua_State* L)
 	lua_pushnumber(L, LIBUSB_ERROR_INVALID_PARAM); lua_setfield(L, -2, "ERROR_INVALID_PARAM");
 	lua_pushnumber(L, LIBUSB_ERROR_IO); lua_setfield(L, -2, "ERROR_IO");
 	lua_pushnumber(L, LIBUSB_ERROR_INTERRUPTED); lua_setfield(L, -2, "ERROR_INTERRUPTED");
+	lua_pushnumber(L, LIBUSB_TRANSFER_ERROR); lua_setfield(L, -2, "TRANSFER_ERROR");
+	lua_pushnumber(L, LIBUSB_TRANSFER_OVERFLOW); lua_setfield(L, -2, "TRANSFER_OVERFLOW");
+	lua_pushnumber(L, LIBUSB_TRANSFER_TIMED_OUT); lua_setfield(L, -2, "TRANSFER_TIMED_OUT");
+	lua_pushnumber(L, LIBUSB_TRANSFER_CANCELLED); lua_setfield(L, -2, "TRANSFER_CANCELLED");
+	lua_pushnumber(L, LIBUSB_TRANSFER_NO_DEVICE); lua_setfield(L, -2, "TRANSFER_NO_DEVICE");
+	lua_pushnumber(L, LIBUSB_TRANSFER_COMPLETED); lua_setfield(L, -2, "TRANSFER_COMPLETED");
+	lua_pushnumber(L, LIBUSB_TRANSFER_STALL); lua_setfield(L, -2, "TRANSFER_STALL");
 	lua_newtable(L); /* ..., env, t */
 	lua_pushnumber(L, LIBUSB_CLASS_WIRELESS); lua_setfield(L, -2, "LIBUSB_CLASS_WIRELESS");
 	lua_pushnumber(L, LIBUSB_CLASS_WIRELESS); lua_setfield(L, -2, "wireless");
@@ -1076,6 +1167,23 @@ void luausb_init_enums(lua_State* L)
 	lua_pushnumber(L, LIBUSB_ERROR_INTERRUPTED); lua_setfield(L, -2, "LIBUSB_ERROR_INTERRUPTED");
 	lua_pushnumber(L, LIBUSB_ERROR_INTERRUPTED); lua_setfield(L, -2, "interrupted");
 	lua_setfield(L, -2, "error"); /* ..., env */
+	
+	lua_newtable(L); /* ..., env, t */
+	lua_pushnumber(L, LIBUSB_TRANSFER_ERROR); lua_setfield(L, -2, "LIBUSB_TRANSFER_ERROR");
+	lua_pushnumber(L, LIBUSB_TRANSFER_ERROR); lua_setfield(L, -2, "error");
+	lua_pushnumber(L, LIBUSB_TRANSFER_OVERFLOW); lua_setfield(L, -2, "LIBUSB_TRANSFER_OVERFLOW");
+	lua_pushnumber(L, LIBUSB_TRANSFER_OVERFLOW); lua_setfield(L, -2, "overflow");
+	lua_pushnumber(L, LIBUSB_TRANSFER_TIMED_OUT); lua_setfield(L, -2, "LIBUSB_TRANSFER_TIMED_OUT");
+	lua_pushnumber(L, LIBUSB_TRANSFER_TIMED_OUT); lua_setfield(L, -2, "out");
+	lua_pushnumber(L, LIBUSB_TRANSFER_CANCELLED); lua_setfield(L, -2, "LIBUSB_TRANSFER_CANCELLED");
+	lua_pushnumber(L, LIBUSB_TRANSFER_CANCELLED); lua_setfield(L, -2, "cancelled");
+	lua_pushnumber(L, LIBUSB_TRANSFER_NO_DEVICE); lua_setfield(L, -2, "LIBUSB_TRANSFER_NO_DEVICE");
+	lua_pushnumber(L, LIBUSB_TRANSFER_NO_DEVICE); lua_setfield(L, -2, "device");
+	lua_pushnumber(L, LIBUSB_TRANSFER_COMPLETED); lua_setfield(L, -2, "LIBUSB_TRANSFER_COMPLETED");
+	lua_pushnumber(L, LIBUSB_TRANSFER_COMPLETED); lua_setfield(L, -2, "completed");
+	lua_pushnumber(L, LIBUSB_TRANSFER_STALL); lua_setfield(L, -2, "LIBUSB_TRANSFER_STALL");
+	lua_pushnumber(L, LIBUSB_TRANSFER_STALL); lua_setfield(L, -2, "stall");
+	lua_setfield(L, -2, "transfer_status"); /* ..., env */
 	
 }
 
