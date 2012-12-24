@@ -860,6 +860,21 @@ BINDING(submit_transfer)
 	return 1;
 }
 
+BINDING(cancel_transfer)
+{
+	struct libusb_transfer* transfer;
+	int result;
+	
+	transfer = luausb_check_transfer(L, 1);
+	
+	result = libusb_cancel_transfer(transfer);
+	if (result != LIBUSB_SUCCESS)
+		return lua__usberror(L, result);
+	
+	lua_pushboolean(L, 1);
+	return 1;
+}
+
 BINDING(handle_events_completed)
 {
 	libusb_context* ctx;
@@ -1132,6 +1147,7 @@ struct luaL_Reg libusb_endpoint_descriptor__methods[] = {
 struct luaL_Reg libusb_transfer__methods[] = {
 	{"free", lua__libusb_free_transfer},
 	{"submit", lua__libusb_submit_transfer},
+	{"cancel", lua__libusb_cancel_transfer},
 	{0, 0},
 };
 
