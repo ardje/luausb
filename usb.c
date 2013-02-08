@@ -2,6 +2,8 @@
 #include <lauxlib.h>
 #include <libusb.h>
 #include <string.h>
+#include <poll.h>
+#include <stdlib.h>
 #include "compat.h"
 #include "enums.h"
 #include "structs.h"
@@ -51,6 +53,14 @@ void luausb_push_context(lua_State* L, libusb_context* value)
 
 #define BINDING(f) static int lua__libusb_##f(lua_State* L)
 #define BIND(f) {#f, lua__libusb_##f},
+
+struct int_name_t
+{
+	const char* name;
+	int value;
+};
+
+/****************************************************************************/
 
 BINDING(init)
 {
@@ -936,6 +946,77 @@ BINDING(handle_events_completed)
 	return 1;
 }
 
+static struct int_name_t poll_events[] = {
+	{"POLLIN", POLLIN},
+	{"POLLRDNORM", POLLRDNORM},
+	{"POLLRDBAND", POLLRDBAND},
+	{"POLLPRI", POLLPRI},
+	{"POLLOUT", POLLOUT},
+	{"POLLWRNORM", POLLWRNORM},
+	{"POLLWRBAND", POLLWRBAND},
+	{"POLLERR", POLLERR},
+	{"POLLHUP", POLLHUP},
+	{"POLLNVAL", POLLNVAL},
+	{0, 0},
+};
+
+BINDING(get_pollfds)
+{
+	libusb_context* ctx;
+	const struct libusb_pollfd** result;
+	const struct libusb_pollfd** it;
+	
+	ctx = luausb_opt_context(L, 1, NULL);
+	
+	result = libusb_get_pollfds(ctx);
+	if (!result)
+	{
+		lua_pushnil(L);
+		return 1;
+	}
+	
+	lua_newtable(L);
+	it = result;
+	while (*it)
+	{
+		int fd;
+		short events;
+		fd = (*it)->fd;
+		events = (*it)->events;
+		if (events != 0)
+		{
+			struct int_name_t* p;
+			lua_pushnumber(L, fd);
+			lua_newtable(L);
+			for (p=poll_events; p->name; ++p)
+			{
+				if (events & p->value)
+				{
+					lua_pushboolean(L, 1);
+					lua_setfield(L, -2, p->name);
+				}
+			}
+			lua_settable(L, -3);
+		}
+		++it;
+	}
+	free(result);
+	return 1;
+}
+
+BINDING(pollfds_handle_timeouts)
+{
+	libusb_context* ctx;
+	int result;
+	
+	ctx = luausb_opt_context(L, 1, NULL);
+	
+	result = libusb_pollfds_handle_timeouts(ctx);
+	
+	lua_pushboolean(L, result);
+	return 1;
+}
+
 /****************************************************************************/
 
 #define GETTER(c, f) int luausb_get_##c##_##f(lua_State* L)
@@ -1100,6 +1181,8 @@ struct luaL_Reg libusb_context__methods[] = {
 	BIND(open_device_with_vid_pid)
 	BIND(handle_events)
 	BIND(handle_events_completed)
+	BIND(get_pollfds)
+	BIND(pollfds_handle_timeouts)
 	{0, 0},
 };
 /*
