@@ -4,6 +4,7 @@
 #include <string.h>
 #include <poll.h>
 #include <stdlib.h>
+#include <math.h>
 #include "compat.h"
 #include "enums.h"
 #include "structs.h"
@@ -928,6 +929,27 @@ BINDING(handle_events)
 	return 1;
 }
 
+BINDING(handle_events_timeout)
+{
+	libusb_context* ctx;
+	struct timeval tv;
+	lua_Number t;
+	int result;
+	
+	ctx = luausb_opt_context(L, 1, NULL);
+	t = luaL_checknumber(L, 2);
+	
+	tv.tv_sec = floor(t);
+	tv.tv_usec = floor((t - tv.tv_sec) * 1e9);
+	
+	result = libusb_handle_events_timeout(ctx, &tv);
+	if (result != LIBUSB_SUCCESS)
+		return lua__usberror(L, result);
+	
+	lua_pushboolean(L, 1);
+	return 1;
+}
+
 BINDING(handle_events_completed)
 {
 	libusb_context* ctx;
@@ -1180,6 +1202,7 @@ struct luaL_Reg libusb_context__methods[] = {
 	BIND(get_device_list)
 	BIND(open_device_with_vid_pid)
 	BIND(handle_events)
+	BIND(handle_events_timeout)
 	BIND(handle_events_completed)
 	BIND(get_pollfds)
 	BIND(pollfds_handle_timeouts)
