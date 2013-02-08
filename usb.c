@@ -30,6 +30,14 @@ libusb_context* luausb_check_context(lua_State* L, int index)
 	return ctx;
 }
 
+libusb_context* luausb_opt_context(lua_State* L, int index, libusb_context* d)
+{
+	if (lua_isnoneornil(L, index))
+		return d;
+	else
+		return luausb_check_context(L, index);
+}
+
 void luausb_push_context(lua_State* L, libusb_context* value)
 {
 	libusb_context** udata;
@@ -46,15 +54,30 @@ void luausb_push_context(lua_State* L, libusb_context* value)
 
 BINDING(init)
 {
+	int alloc_context;
 	libusb_context* context;
 	int result;
 	
-	result = libusb_init(&context);
-	if (result != LIBUSB_SUCCESS)
-		return lua__usberror(L, result);
+	alloc_context = lua_toboolean(L, 1);
 	
-	luausb_push_context(L, context);
-	return 1;
+	if (alloc_context)
+	{
+		result = libusb_init(&context);
+		if (result != LIBUSB_SUCCESS)
+			return lua__usberror(L, result);
+		
+		luausb_push_context(L, context);
+		return 1;
+	}
+	else
+	{
+		result = libusb_init(NULL);
+		if (result != LIBUSB_SUCCESS)
+			return lua__usberror(L, result);
+		
+		lua_pushboolean(L, 1);
+		return 1;
+	}
 }
 
 int luausb_context_gc(lua_State* L)
@@ -72,8 +95,13 @@ int luausb_context_gc(lua_State* L)
 
 BINDING(exit)
 {
-	luausb_check_context(L, 1);
-	return luausb_context_gc(L);
+	if (luausb_opt_context(L, 1, NULL))
+		return luausb_context_gc(L);
+	else
+	{
+		libusb_exit(NULL);
+		return 0;
+	}
 }
 
 BINDING(get_device_list)
@@ -82,7 +110,7 @@ BINDING(get_device_list)
 	libusb_device** list;
 	ssize_t result, i;
 	
-	ctx = luausb_check_context(L, 1);
+	ctx = luausb_opt_context(L, 1, NULL);
 	
 	result = libusb_get_device_list(ctx, &list);
 	if (result < 0)
@@ -200,7 +228,7 @@ BINDING(open_device_with_vid_pid)
 	uint16_t product_id;
 	libusb_device_handle* result;
 	
-	ctx = luausb_check_context(L, 1);
+	ctx = luausb_opt_context(L, 1, NULL);
 	vendor_id = (uint16_t)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
 	product_id = (uint16_t)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
 	
@@ -880,7 +908,7 @@ BINDING(handle_events_completed)
 	libusb_context* ctx;
 	int result;
 	
-	ctx = luausb_check_context(L, 1);
+	ctx = luausb_opt_context(L, 1, NULL);
 	
 	result = libusb_handle_events_completed(ctx, NULL);
 	if (result != LIBUSB_SUCCESS)
@@ -1182,6 +1210,8 @@ LUAMOD_API int luaopen_module(lua_State* L)
 	/* module functions */
 	lua_pushvalue(L, 1);
 	setfuncs(L, functions, 1);
+	lua_pushvalue(L, 1);
+	setfuncs(L, libusb_context__methods, 1);
 	return 1;
 }
 
