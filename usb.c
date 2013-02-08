@@ -866,13 +866,13 @@ BINDING(alloc_transfer)
 
 int luausb_transfer_gc(lua_State* L)
 {
-	struct libusb_transfer** dev;
+	struct libusb_transfer** transfer;
 	
-	dev = (struct libusb_transfer**)lua_touserdata(L, 1);
-	if (*dev)
+	transfer = (struct libusb_transfer**)lua_touserdata(L, 1);
+	if (*transfer)
 	{
-		libusb_free_transfer(*dev);
-		*dev = 0;
+		libusb_free_transfer(*transfer);
+		*transfer = 0;
 	}
 	return 0;
 }
