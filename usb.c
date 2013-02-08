@@ -903,14 +903,32 @@ BINDING(cancel_transfer)
 	return 1;
 }
 
-BINDING(handle_events_completed)
+BINDING(handle_events)
 {
 	libusb_context* ctx;
 	int result;
 	
 	ctx = luausb_opt_context(L, 1, NULL);
 	
-	result = libusb_handle_events_completed(ctx, NULL);
+	result = libusb_handle_events(ctx);
+	if (result != LIBUSB_SUCCESS)
+		return lua__usberror(L, result);
+	
+	lua_pushboolean(L, 1);
+	return 1;
+}
+
+BINDING(handle_events_completed)
+{
+	libusb_context* ctx;
+	int* completed;
+	int result;
+	
+	ctx = luausb_opt_context(L, 1, NULL);
+	luaL_checktype(L, 2, LUA_TUSERDATA);
+	completed = (int*)lua_touserdata(L, 2);
+	
+	result = libusb_handle_events_completed(ctx, completed);
 	if (result != LIBUSB_SUCCESS)
 		return lua__usberror(L, result);
 	
@@ -1080,6 +1098,7 @@ struct luaL_Reg libusb_context__methods[] = {
 	BIND(exit)
 	BIND(get_device_list)
 	BIND(open_device_with_vid_pid)
+	BIND(handle_events)
 	BIND(handle_events_completed)
 	{0, 0},
 };
