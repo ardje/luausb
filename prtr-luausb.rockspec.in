@@ -22,7 +22,7 @@ build = {
 				'enums.c',
 			},
 			defines = {
-				'LUAMOD_API=LUALIB_API',
+				'LUAUSB_API=LUALIB_API',
 				'luaopen_module=luaopen_usb',
 			},
 			libraries = { 'usb-1.0' },

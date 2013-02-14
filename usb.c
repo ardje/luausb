@@ -1306,7 +1306,7 @@ struct luaL_Reg libusb_transfer__methods[] = {
 
 /****************************************************************************/
 
-LUAMOD_API int luaopen_module(lua_State* L)
+LUAUSB_API int luaopen_module(lua_State* L)
 {
 	/* module */
 #if LUA_VERSION_NUM==502

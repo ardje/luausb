@@ -3,14 +3,6 @@
 
 /****************************************************************************/
 
-#ifndef LUAMOD_API
-#	ifdef WIN32
-#		define LUAMOD_API __declspec(dllexport)
-#	else
-#		define LUAMOD_API __attribute__((visibility("default")))
-#	endif
-#endif
-
 #if LUA_VERSION_NUM==502
 
 int typeerror(lua_State* L, int narg, const char* tname);
