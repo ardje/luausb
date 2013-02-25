@@ -7,6 +7,7 @@ return {
 		"compat.c",
 	},
 	dependencies = {'usb'},
+	define = { LUAUSB_API='LUAMOD_API' },
 }
 
 -- vi: ft=lua

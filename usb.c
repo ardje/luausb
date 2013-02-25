@@ -2,7 +2,9 @@
 #include <lauxlib.h>
 #include <libusb.h>
 #include <string.h>
+#ifndef _WIN32
 #include <poll.h>
+#endif
 #include <stdlib.h>
 #include <math.h>
 #include "compat.h"
@@ -969,6 +971,7 @@ BINDING(handle_events_completed)
 }
 
 static struct int_name_t poll_events[] = {
+#ifndef _WIN32
 	{"POLLIN", POLLIN},
 	{"POLLRDNORM", POLLRDNORM},
 	{"POLLRDBAND", POLLRDBAND},
@@ -979,6 +982,7 @@ static struct int_name_t poll_events[] = {
 	{"POLLERR", POLLERR},
 	{"POLLHUP", POLLHUP},
 	{"POLLNVAL", POLLNVAL},
+#endif
 	{0, 0},
 };
 
