@@ -4,7 +4,14 @@ package.path = "demo/?.lua;"..package.path
 
 local usb = require 'usb'
 local names = require 'names'
-local bit = require 'bit'
+local bit
+if _VERSION == 'Lua 5.2' then
+	bit = require 'bit32'
+elseif _VERSION == 'Lua 5.1' then
+	bit = require 'bit'
+else
+	error("unsupported Lua version")
+end
 local serial = require 'serial'
 require 'serial.util'
 --require 'util'
@@ -669,7 +676,7 @@ end
 local typeattr = { "Control", "Isochronous", "Bulk", "Interrupt" }
 local syncattr = { "None", "Asynchronous", "Adaptive", "Synchronous" }
 local usage = { "Data", "Feedback", "Implicit feedback Data", "(reserved)" }
-local hb = { "1x", "2x", "3x", "(?\?)" }
+local hb = { "1x", "2x", "3x", "(??)" }
 
 local function dump_endpoint(dev, interface, endpoint)
 	local wmax = le16_to_cpu(endpoint.wMaxPacketSize)
