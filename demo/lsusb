@@ -1340,8 +1340,8 @@ local function dumpdev(dev)
 end
 
 local function list_devices(busnum, devnum, vendorid, productid)
-	local context = assert(usb.init())
-	local devices = assert(context:get_device_list())
+	assert(usb.init())
+	local devices = assert(usb.get_device_list())
 	for _,device in ipairs(devices) do
 		local descriptor = assert(device:get_device_descriptor())
 		if (not vendorid or vendorid==descriptor.idVendor)
