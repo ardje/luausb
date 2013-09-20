@@ -8,9 +8,9 @@ else
 DLLEXT=so
 endif
 
-LUA_VERSION?=5.1
+LUA_VERSION?=5.2
 
-PREFIX?=/usr/local
+PREFIX?=/usr
 INSTALL_LUA=$(PREFIX)/share/lua/$(LUA_VERSION)
 INSTALL_BIN=$(PREFIX)/lib/lua/$(LUA_VERSION)
 CPPFLAGS=-Wall -Wextra -Werror -O2
