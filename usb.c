@@ -1043,6 +1043,19 @@ BINDING(pollfds_handle_timeouts)
 	return 1;
 }
 
+BINDING(set_debug)
+{
+	libusb_context* ctx;
+	int level;
+	
+	ctx = luausb_opt_context(L, 1, NULL);
+	level = (int)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
+	
+	libusb_set_debug(ctx, level);
+	
+	return 0;
+}
+
 /****************************************************************************/
 
 #define GETTER(c, f) int luausb_get_##c##_##f(lua_State* L)
@@ -1210,6 +1223,7 @@ struct luaL_Reg libusb_context__methods[] = {
 	BIND(handle_events_completed)
 	BIND(get_pollfds)
 	BIND(pollfds_handle_timeouts)
+	BIND(set_debug)
 	{0, 0},
 };
 /*
