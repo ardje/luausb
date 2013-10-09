@@ -1144,7 +1144,7 @@ GETTER(transfer, callback)
 	return 1;
 }
 
-static void luausb_transfer_cb(struct libusb_transfer* transfer)
+static void LIBUSB_CALL luausb_transfer_cb(struct libusb_transfer* transfer)
 {
 	lua_State* L;
 	
