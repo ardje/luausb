@@ -1,6 +1,19 @@
 local enums = {}
 local structs = {}
 
+local function epairs(enum)
+	local cnames = {}
+	for cname in pairs(enum.values) do
+		table.insert(cnames, cname)
+	end
+	table.sort(cnames)
+	return coroutine.wrap(function()
+		for _,cname in ipairs(cnames) do
+			coroutine.yield(cname, enum.values[cname])
+		end
+	end)
+end
+
 ------------------------------------------------------------------------------
 
 table.insert(enums, {
@@ -399,7 +412,7 @@ void luausb_init_enums(lua_State* L)
 ]])
 
 for _,enum in ipairs(enums) do
-	for cname in pairs(enum.values) do
+	for cname in epairs(enum) do
 		enums_c:write([[
 	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..cname..[[");
 ]])
@@ -411,7 +424,7 @@ for _,enum in ipairs(enums) do
 	enums_c:write([[
 	lua_newtable(L); /* ..., env, t */
 ]])
-	for cname,luaname in pairs(enum.values) do
+	for cname,luaname in epairs(enum) do
 		enums_c:write([[
 	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "LIBUSB_]]..cname..[[");
 	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..luaname..[[");
