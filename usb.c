@@ -679,9 +679,15 @@ BINDING(control_transfer)
 	wValue = (uint16_t)luaL_checknumber(L, 4); /* :FIXME: handle overflow */
 	wIndex = (uint16_t)luaL_checknumber(L, 5); /* :FIXME: handle overflow */
 	if (bmRequestType & 0x80)
+		luaL_checktype(L, 6, LUA_TNUMBER);
+	else
+		luaL_checktype(L, 6, LUA_TSTRING);
+	timeout = (unsigned int)luaL_optnumber(L, 7, 0); /* :FIXME: handle overflow */
+	
+	/* extract actual arg 6 value */
+	if (bmRequestType & 0x80)
 	{
 		/* input request */
-		luaL_checktype(L, 6, LUA_TNUMBER);
 		wLength = (uint16_t)lua_tonumber(L, 6); /* :FIXME: handle overflow */
 		data = (unsigned char*)lua_newuserdata(L, wLength);
 	}
@@ -690,13 +696,11 @@ BINDING(control_transfer)
 		/* output request */
 		size_t len;
 		const char* str;
-		luaL_checktype(L, 6, LUA_TSTRING);
 		str = lua_tolstring(L, 6, &len);
 		wLength = (uint16_t)len; /* :FIXME: handle overflow */
 		data = (unsigned char*)lua_newuserdata(L, wLength);
 		memcpy(data, str, len);
 	}
-	timeout = (unsigned int)luaL_optnumber(L, 7, 0); /* :FIXME: handle overflow */
 	
 	result = libusb_control_transfer(dev_handle, bmRequestType, bRequest, wValue, wIndex, data, wLength, timeout);
 	if (result < 0)
@@ -730,9 +734,16 @@ BINDING(bulk_transfer)
 	dev_handle = luausb_check_device_handle(L, 1);
 	endpoint = (unsigned char)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
 	if (endpoint & LIBUSB_ENDPOINT_IN)
+		luaL_checktype(L, 3, LUA_TNUMBER);
+	else
+		luaL_checktype(L, 3, LUA_TSTRING);
+	timeout = (unsigned int)luaL_optnumber(L, 4, 0); /* :FIXME: handle overflow */
+	
+	/* extract actual arg 3 value */
+	if (endpoint & LIBUSB_ENDPOINT_IN)
 	{
 		/* in endpoint */
-		length = (int)luaL_checknumber(L, 3); /* :FIXME: handle overflow */
+		length = (int)lua_tonumber(L, 3); /* :FIXME: handle overflow */
 		data = (unsigned char*)lua_newuserdata(L, length);
 	}
 	else
@@ -740,12 +751,11 @@ BINDING(bulk_transfer)
 		/* out endpoint */
 		size_t len;
 		const char* str;
-		str = luaL_checklstring(L, 3, &len);
+		str = lua_tolstring(L, 3, &len);
 		length = (int)len; /* :FIXME: handle overflow */
 		data = (unsigned char*)lua_newuserdata(L, length);
 		memcpy(data, str, len);
 	}
-	timeout = (unsigned int)luaL_optnumber(L, 4, 0); /* :FIXME: handle overflow */
 	
 	result = libusb_bulk_transfer(dev_handle, endpoint, data, length, &transferred, timeout);
 	if (result < 0 && result != LIBUSB_ERROR_TIMEOUT)
@@ -777,9 +787,9 @@ BINDING(interrupt_transfer)
 	dev_handle = luausb_check_device_handle(L, 1);
 	endpoint = (unsigned char)luaL_checknumber(L, 2); /* :FIXME: handle overflow */
 	if (endpoint & LIBUSB_ENDPOINT_IN)
-		luaL_checknumber(L, 3);
+		luaL_checktype(L, 3, LUA_TNUMBER);
 	else
-		luaL_checkstring(L, 3);
+		luaL_checktype(L, 3, LUA_TSTRING);
 	timeout = (unsigned int)luaL_optnumber(L, 4, 0); /* :FIXME: handle overflow */
 	
 	/* extract actual arg 3 value */
