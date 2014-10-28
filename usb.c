@@ -1327,7 +1327,7 @@ struct luaL_Reg libusb_transfer__methods[] = {
 LUAUSB_API int luaopen_module(lua_State* L)
 {
 	/* module */
-#if LUA_VERSION_NUM==502
+#if LUA_VERSION_NUM>=502
 	lua_newtable(L);
 #elif LUA_VERSION_NUM==501
 	struct luaL_Reg empty[] = {{0,0}};

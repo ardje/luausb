@@ -3,7 +3,7 @@
 
 /****************************************************************************/
 
-#if LUA_VERSION_NUM==502
+#if LUA_VERSION_NUM>=502
 
 int typeerror(lua_State* L, int narg, const char* tname);
 #define setfuncs luaL_setfuncs
