@@ -17,7 +17,7 @@ static int lua__usberror(lua_State* L, int usberror)
 {
 	lua_pushnil(L);
 	lua_pushstring(L, libusb_error_name(usberror));
-	lua_pushnumber(L, usberror);
+	lua_pushinteger(L, usberror);
 	return 3;
 }
 
@@ -148,7 +148,7 @@ BINDING(get_bus_number)
 	
 	result = libusb_get_bus_number(dev);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -161,7 +161,7 @@ BINDING(get_port_number)
 	
 	result = libusb_get_port_number(dev);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -174,7 +174,7 @@ BINDING(get_device_address)
 	
 	result = libusb_get_device_address(dev);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -191,7 +191,7 @@ BINDING(get_max_packet_size)
 	if (result < 0)
 		return lua__usberror(L, result);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -208,7 +208,7 @@ BINDING(get_max_iso_packet_size)
 	if (result < 0)
 		return lua__usberror(L, result);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -312,7 +312,7 @@ BINDING(get_configuration)
 	if (result != 0)
 		return lua__usberror(L, result);
 	
-	lua_pushnumber(L, config);
+	lua_pushinteger(L, config);
 	return 1;
 }
 
@@ -728,7 +728,7 @@ BINDING(control_transfer)
 	else
 	{
 		/* output request */
-		lua_pushnumber(L, result);
+		lua_pushinteger(L, result);
 		return 1;
 	}
 }
@@ -781,7 +781,7 @@ BINDING(bulk_transfer)
 		lua_pushlstring(L, (char*)data, transferred);
 	else
 		/* out endpoint */
-		lua_pushnumber(L, transferred);
+		lua_pushinteger(L, transferred);
 	lua_replace(L, -1-i);
 	return i;
 }
@@ -835,7 +835,7 @@ BINDING(interrupt_transfer)
 		lua_pushlstring(L, (char*)data, transferred);
 	else
 		/* out endpoint */
-		lua_pushnumber(L, transferred);
+		lua_pushinteger(L, transferred);
 	if (result < 0)
 	{
 		lua_replace(L, -1-i);
@@ -854,7 +854,7 @@ BINDING(cpu_to_le16)
 	
 	result = libusb_cpu_to_le16(x);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -867,7 +867,7 @@ BINDING(le16_to_cpu)
 	
 	result = libusb_le16_to_cpu(x);
 	
-	lua_pushnumber(L, result);
+	lua_pushinteger(L, result);
 	return 1;
 }
 
@@ -1035,7 +1035,7 @@ BINDING(get_pollfds)
 		if (events != 0)
 		{
 			struct int_name_t* p;
-			lua_pushnumber(L, fd);
+			lua_pushinteger(L, fd);
 			lua_newtable(L);
 			for (p=poll_events; p->name; ++p)
 			{
@@ -1178,7 +1178,7 @@ static void LIBUSB_CALL luausb_transfer_cb(struct libusb_transfer* transfer)
 	if (transfer->endpoint & LIBUSB_ENDPOINT_IN)
 		lua_pushlstring(L, (const char*)transfer->buffer, transfer->actual_length);
 	else
-		lua_pushnumber(L, transfer->actual_length);
+		lua_pushinteger(L, transfer->actual_length);
 	if (lua_pcall(L, 2, 0, 0))
 	{
 		fprintf(stderr, "%s\n", lua_tostring(L, -1));

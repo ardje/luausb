@@ -161,34 +161,34 @@ table.insert(enums, {
 table.insert(structs, {
 	cname = 'device_descriptor',
 	fields = {
-		{name='bLength', ctype='uint8_t', luatype='number'},
-		{name='bDescriptorType', ctype='uint8_t', luatype='number'},
-		{name='bcdUSB', ctype='uint16_t', luatype='number'},
-		{name='bDeviceClass', ctype='uint8_t', luatype='number'},
-		{name='bDeviceSubClass', ctype='uint8_t', luatype='number'},
-		{name='bDeviceProtocol', ctype='uint8_t', luatype='number'},
-		{name='bMaxPacketSize0', ctype='uint8_t', luatype='number'},
-		{name='idVendor', ctype='uint16_t', luatype='number'},
-		{name='idProduct', ctype='uint16_t', luatype='number'},
-		{name='bcdDevice', ctype='uint16_t', luatype='number'},
-		{name='iManufacturer', ctype='uint8_t', luatype='number'},
-		{name='iProduct', ctype='uint8_t', luatype='number'},
-		{name='iSerialNumber', ctype='uint8_t', luatype='number'},
-		{name='bNumConfigurations', ctype='uint8_t', luatype='number'},
+		{name='bLength', ctype='uint8_t', luatype='integer'},
+		{name='bDescriptorType', ctype='uint8_t', luatype='integer'},
+		{name='bcdUSB', ctype='uint16_t', luatype='integer'},
+		{name='bDeviceClass', ctype='uint8_t', luatype='integer'},
+		{name='bDeviceSubClass', ctype='uint8_t', luatype='integer'},
+		{name='bDeviceProtocol', ctype='uint8_t', luatype='integer'},
+		{name='bMaxPacketSize0', ctype='uint8_t', luatype='integer'},
+		{name='idVendor', ctype='uint16_t', luatype='integer'},
+		{name='idProduct', ctype='uint16_t', luatype='integer'},
+		{name='bcdDevice', ctype='uint16_t', luatype='integer'},
+		{name='iManufacturer', ctype='uint8_t', luatype='integer'},
+		{name='iProduct', ctype='uint8_t', luatype='integer'},
+		{name='iSerialNumber', ctype='uint8_t', luatype='integer'},
+		{name='bNumConfigurations', ctype='uint8_t', luatype='integer'},
 	},
 })
 
 table.insert(structs, {
 	cname = 'endpoint_descriptor',
 	fields = {
-		{name='bLength', ctype='uint8_t', luatype='number'},
-		{name='bDescriptorType', ctype='uint8_t', luatype='number'},
-		{name='bEndpointAddress', ctype='uint8_t', luatype='number'},
-		{name='bmAttributes', ctype='uint8_t', luatype='number'},
-		{name='wMaxPacketSize', ctype='uint16_t', luatype='number'},
-		{name='bInterval', ctype='uint8_t', luatype='number'},
-		{name='bRefresh', ctype='uint8_t', luatype='number'},
-		{name='bSynchAddress', ctype='uint8_t', luatype='number'},
+		{name='bLength', ctype='uint8_t', luatype='integer'},
+		{name='bDescriptorType', ctype='uint8_t', luatype='integer'},
+		{name='bEndpointAddress', ctype='uint8_t', luatype='integer'},
+		{name='bmAttributes', ctype='uint8_t', luatype='integer'},
+		{name='wMaxPacketSize', ctype='uint16_t', luatype='integer'},
+		{name='bInterval', ctype='uint8_t', luatype='integer'},
+		{name='bRefresh', ctype='uint8_t', luatype='integer'},
+		{name='bSynchAddress', ctype='uint8_t', luatype='integer'},
 		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
 })
@@ -196,15 +196,15 @@ table.insert(structs, {
 table.insert(structs, {
 	cname = 'interface_descriptor',
 	fields = {
-		{name='bLength', ctype='uint8_t', luatype='number'},
-		{name='bDescriptorType', ctype='uint8_t', luatype='number'},
-		{name='bInterfaceNumber', ctype='uint8_t', luatype='number'},
-		{name='bAlternateSetting', ctype='uint8_t', luatype='number'},
-		{name='bNumEndpoints', ctype='uint8_t', luatype='number'},
-		{name='bInterfaceClass', ctype='uint8_t', luatype='number'},
-		{name='bInterfaceSubClass', ctype='uint8_t', luatype='number'},
-		{name='bInterfaceProtocol', ctype='uint8_t', luatype='number'},
-		{name='iInterface', ctype='uint8_t', luatype='number'},
+		{name='bLength', ctype='uint8_t', luatype='integer'},
+		{name='bDescriptorType', ctype='uint8_t', luatype='integer'},
+		{name='bInterfaceNumber', ctype='uint8_t', luatype='integer'},
+		{name='bAlternateSetting', ctype='uint8_t', luatype='integer'},
+		{name='bNumEndpoints', ctype='uint8_t', luatype='integer'},
+		{name='bInterfaceClass', ctype='uint8_t', luatype='integer'},
+		{name='bInterfaceSubClass', ctype='uint8_t', luatype='integer'},
+		{name='bInterfaceProtocol', ctype='uint8_t', luatype='integer'},
+		{name='iInterface', ctype='uint8_t', luatype='integer'},
 		{name='endpoint', ctype='struct libusb_endpoint_descriptor*', setter=false},
 		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
@@ -214,21 +214,21 @@ table.insert(structs, {
 	cname = 'interface',
 	fields = {
 		{name='altsetting', ctype='struct libusb_interface_descriptor*', setter=false},
-		{name='num_altsetting', ctype='int', luatype='number'},
+		{name='num_altsetting', ctype='int', luatype='integer'},
 	},
 })
 
 table.insert(structs, {
 	cname = 'config_descriptor',
 	fields = {
-		{name='bLength', ctype='uint8_t', luatype='number'},
-		{name='bDescriptorType', ctype='uint8_t', luatype='number'},
-		{name='wTotalLength', ctype='uint16_t', luatype='number'},
-		{name='bNumInterfaces', ctype='uint8_t', luatype='number'},
-		{name='bConfigurationValue', ctype='uint8_t', luatype='number'},
-		{name='iConfiguration', ctype='uint8_t', luatype='number'},
-		{name='bmAttributes', ctype='uint8_t', luatype='number'},
-		{name='MaxPower', ctype='uint8_t', luatype='number'},
+		{name='bLength', ctype='uint8_t', luatype='integer'},
+		{name='bDescriptorType', ctype='uint8_t', luatype='integer'},
+		{name='wTotalLength', ctype='uint16_t', luatype='integer'},
+		{name='bNumInterfaces', ctype='uint8_t', luatype='integer'},
+		{name='bConfigurationValue', ctype='uint8_t', luatype='integer'},
+		{name='iConfiguration', ctype='uint8_t', luatype='integer'},
+		{name='bmAttributes', ctype='uint8_t', luatype='integer'},
+		{name='MaxPower', ctype='uint8_t', luatype='integer'},
 		{name='interface', ctype='struct libusb_interface*', setter=false},
 		{name='extra', const=true, ctype='unsigned char*', luatype='string', size='extra_length', size_ctype='int'},
 	},
@@ -250,13 +250,13 @@ table.insert(structs, {
 	gc = true,
 	fields = {
 		{name='dev_handle'},
-		{name='flags', ctype='uint8_t', luatype='number'},
-		{name='endpoint', ctype='unsigned char', luatype='number'},
-		{name='type', ctype='unsigned char', luatype='number'},
-		{name='timeout', ctype='unsigned int', luatype='number'},
-		{name='status', ctype='enum libusb_transfer_status', luatype='number'},
+		{name='flags', ctype='uint8_t', luatype='integer'},
+		{name='endpoint', ctype='unsigned char', luatype='integer'},
+		{name='type', ctype='unsigned char', luatype='integer'},
+		{name='timeout', ctype='unsigned int', luatype='integer'},
+		{name='status', ctype='enum libusb_transfer_status', luatype='integer'},
 	--	{name='length'},
-		{name='actual_length', ctype='int', luatype='number'},
+		{name='actual_length', ctype='int', luatype='integer'},
 		{name='callback'},
 	--	{name='user_data'},
 		{name='buffer', ctype='unsigned char*', luatype='string', size='length', size_ctype='int', const=false},
@@ -301,7 +301,7 @@ enum libusb_]]..cname..[[ luausb_to_]]..cname..[[(lua_State* L, int index)
 	switch (lua_type(L, index))
 	{
 	case LUA_TNUMBER:
-		return lua_tonumber(L, index);
+		return lua_tointeger(L, index);
 	case LUA_TSTRING:
 		{
 			enum libusb_]]..cname..[[ result;
@@ -309,7 +309,7 @@ enum libusb_]]..cname..[[ luausb_to_]]..cname..[[(lua_State* L, int index)
 			lua_pushvalue(L, index);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
-				result = lua_tonumber(L, -1);
+				result = lua_tointeger(L, -1);
 			else
 				result = 0;
 			lua_pop(L, 2);
@@ -361,7 +361,7 @@ enum libusb_]]..cname..[[ luausb_check_]]..cname..[[(lua_State* L, int narg)
 	switch (lua_type(L, narg))
 	{
 	case LUA_TNUMBER:
-		return lua_tonumber(L, narg);
+		return lua_tointeger(L, narg);
 	case LUA_TSTRING:
 		{
 			enum libusb_]]..cname..[[ result;
@@ -369,7 +369,7 @@ enum libusb_]]..cname..[[ luausb_check_]]..cname..[[(lua_State* L, int narg)
 			lua_pushvalue(L, narg);
 			lua_gettable(L, -2);
 			if (lua_type(L, -1)==LUA_TNUMBER)
-				result = lua_tonumber(L, -1);
+				result = lua_tointeger(L, -1);
 			else
 			{
 				typeerror(L, narg, "enum libusb_]]..cname..[[");
@@ -414,7 +414,7 @@ void luausb_init_enums(lua_State* L)
 for _,enum in ipairs(enums) do
 	for cname in epairs(enum) do
 		enums_c:write([[
-	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..cname..[[");
+	lua_pushinteger(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..cname..[[");
 ]])
 	end
 end
@@ -426,8 +426,8 @@ for _,enum in ipairs(enums) do
 ]])
 	for cname,luaname in epairs(enum) do
 		enums_c:write([[
-	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "LIBUSB_]]..cname..[[");
-	lua_pushnumber(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..luaname..[[");
+	lua_pushinteger(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "LIBUSB_]]..cname..[[");
+	lua_pushinteger(L, LIBUSB_]]..cname..[[); lua_setfield(L, -2, "]]..luaname..[[");
 ]])
 	end
 	enums_c:write([[
@@ -624,13 +624,13 @@ void luausb_push_]]..cname..[[(lua_State* L, const struct libusb_]]..cname..[[* 
 	-- getters/setters
 	if struct.fields then
 		for _,field in ipairs(struct.fields) do
-			if field.luatype=='number' then
+			if field.luatype=='integer' then
 				structs_c:write([[
 static int luausb_get_]]..cname..[[_]]..field.name..[[(lua_State* L)
 {
 	struct libusb_]]..cname..[[* udata;
 	udata = luausb_to_]]..cname..[[(L, 1);
-	lua_pushnumber(L, udata->]]..field.name..[[);
+	lua_pushinteger(L, udata->]]..field.name..[[);
 	return 1;
 }
 
@@ -638,7 +638,7 @@ static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
 {
 	struct libusb_]]..cname..[[* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
 		lua_pushliteral(L, "invalid value for field ]]..field.name..[[ (]]..field.luatype..[[ expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
@@ -647,7 +647,7 @@ static int luausb_set_]]..cname..[[_]]..field.name..[[(lua_State* L)
 		return lua_error(L);
 	}
 	udata = luausb_to_]]..cname..[[(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->]]..field.name..[[ = (]]..field.ctype..[[)value;
 	return 0;
 }

@@ -126,7 +126,7 @@ static int luausb_get_device_descriptor_bLength(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bLength);
+	lua_pushinteger(L, udata->bLength);
 	return 1;
 }
 
@@ -134,16 +134,16 @@ static int luausb_set_device_descriptor_bLength(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bLength (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bLength (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bLength = (uint8_t)value;
 	return 0;
 }
@@ -152,7 +152,7 @@ static int luausb_get_device_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDescriptorType);
+	lua_pushinteger(L, udata->bDescriptorType);
 	return 1;
 }
 
@@ -160,16 +160,16 @@ static int luausb_set_device_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDescriptorType (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDescriptorType (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDescriptorType = (uint8_t)value;
 	return 0;
 }
@@ -178,7 +178,7 @@ static int luausb_get_device_descriptor_bcdUSB(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bcdUSB);
+	lua_pushinteger(L, udata->bcdUSB);
 	return 1;
 }
 
@@ -186,16 +186,16 @@ static int luausb_set_device_descriptor_bcdUSB(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bcdUSB (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bcdUSB (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bcdUSB = (uint16_t)value;
 	return 0;
 }
@@ -204,7 +204,7 @@ static int luausb_get_device_descriptor_bDeviceClass(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDeviceClass);
+	lua_pushinteger(L, udata->bDeviceClass);
 	return 1;
 }
 
@@ -212,16 +212,16 @@ static int luausb_set_device_descriptor_bDeviceClass(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDeviceClass (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDeviceClass (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDeviceClass = (uint8_t)value;
 	return 0;
 }
@@ -230,7 +230,7 @@ static int luausb_get_device_descriptor_bDeviceSubClass(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDeviceSubClass);
+	lua_pushinteger(L, udata->bDeviceSubClass);
 	return 1;
 }
 
@@ -238,16 +238,16 @@ static int luausb_set_device_descriptor_bDeviceSubClass(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDeviceSubClass (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDeviceSubClass (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDeviceSubClass = (uint8_t)value;
 	return 0;
 }
@@ -256,7 +256,7 @@ static int luausb_get_device_descriptor_bDeviceProtocol(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDeviceProtocol);
+	lua_pushinteger(L, udata->bDeviceProtocol);
 	return 1;
 }
 
@@ -264,16 +264,16 @@ static int luausb_set_device_descriptor_bDeviceProtocol(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDeviceProtocol (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDeviceProtocol (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDeviceProtocol = (uint8_t)value;
 	return 0;
 }
@@ -282,7 +282,7 @@ static int luausb_get_device_descriptor_bMaxPacketSize0(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bMaxPacketSize0);
+	lua_pushinteger(L, udata->bMaxPacketSize0);
 	return 1;
 }
 
@@ -290,16 +290,16 @@ static int luausb_set_device_descriptor_bMaxPacketSize0(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bMaxPacketSize0 (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bMaxPacketSize0 (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bMaxPacketSize0 = (uint8_t)value;
 	return 0;
 }
@@ -308,7 +308,7 @@ static int luausb_get_device_descriptor_idVendor(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->idVendor);
+	lua_pushinteger(L, udata->idVendor);
 	return 1;
 }
 
@@ -316,16 +316,16 @@ static int luausb_set_device_descriptor_idVendor(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field idVendor (number expected, got ");
+		lua_pushliteral(L, "invalid value for field idVendor (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->idVendor = (uint16_t)value;
 	return 0;
 }
@@ -334,7 +334,7 @@ static int luausb_get_device_descriptor_idProduct(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->idProduct);
+	lua_pushinteger(L, udata->idProduct);
 	return 1;
 }
 
@@ -342,16 +342,16 @@ static int luausb_set_device_descriptor_idProduct(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field idProduct (number expected, got ");
+		lua_pushliteral(L, "invalid value for field idProduct (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->idProduct = (uint16_t)value;
 	return 0;
 }
@@ -360,7 +360,7 @@ static int luausb_get_device_descriptor_bcdDevice(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bcdDevice);
+	lua_pushinteger(L, udata->bcdDevice);
 	return 1;
 }
 
@@ -368,16 +368,16 @@ static int luausb_set_device_descriptor_bcdDevice(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bcdDevice (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bcdDevice (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bcdDevice = (uint16_t)value;
 	return 0;
 }
@@ -386,7 +386,7 @@ static int luausb_get_device_descriptor_iManufacturer(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->iManufacturer);
+	lua_pushinteger(L, udata->iManufacturer);
 	return 1;
 }
 
@@ -394,16 +394,16 @@ static int luausb_set_device_descriptor_iManufacturer(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field iManufacturer (number expected, got ");
+		lua_pushliteral(L, "invalid value for field iManufacturer (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->iManufacturer = (uint8_t)value;
 	return 0;
 }
@@ -412,7 +412,7 @@ static int luausb_get_device_descriptor_iProduct(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->iProduct);
+	lua_pushinteger(L, udata->iProduct);
 	return 1;
 }
 
@@ -420,16 +420,16 @@ static int luausb_set_device_descriptor_iProduct(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field iProduct (number expected, got ");
+		lua_pushliteral(L, "invalid value for field iProduct (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->iProduct = (uint8_t)value;
 	return 0;
 }
@@ -438,7 +438,7 @@ static int luausb_get_device_descriptor_iSerialNumber(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->iSerialNumber);
+	lua_pushinteger(L, udata->iSerialNumber);
 	return 1;
 }
 
@@ -446,16 +446,16 @@ static int luausb_set_device_descriptor_iSerialNumber(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field iSerialNumber (number expected, got ");
+		lua_pushliteral(L, "invalid value for field iSerialNumber (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->iSerialNumber = (uint8_t)value;
 	return 0;
 }
@@ -464,7 +464,7 @@ static int luausb_get_device_descriptor_bNumConfigurations(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	udata = luausb_to_device_descriptor(L, 1);
-	lua_pushnumber(L, udata->bNumConfigurations);
+	lua_pushinteger(L, udata->bNumConfigurations);
 	return 1;
 }
 
@@ -472,16 +472,16 @@ static int luausb_set_device_descriptor_bNumConfigurations(lua_State* L)
 {
 	struct libusb_device_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bNumConfigurations (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bNumConfigurations (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_device_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bNumConfigurations = (uint8_t)value;
 	return 0;
 }
@@ -598,7 +598,7 @@ static int luausb_get_endpoint_descriptor_bLength(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bLength);
+	lua_pushinteger(L, udata->bLength);
 	return 1;
 }
 
@@ -606,16 +606,16 @@ static int luausb_set_endpoint_descriptor_bLength(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bLength (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bLength (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bLength = (uint8_t)value;
 	return 0;
 }
@@ -624,7 +624,7 @@ static int luausb_get_endpoint_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDescriptorType);
+	lua_pushinteger(L, udata->bDescriptorType);
 	return 1;
 }
 
@@ -632,16 +632,16 @@ static int luausb_set_endpoint_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDescriptorType (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDescriptorType (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDescriptorType = (uint8_t)value;
 	return 0;
 }
@@ -650,7 +650,7 @@ static int luausb_get_endpoint_descriptor_bEndpointAddress(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bEndpointAddress);
+	lua_pushinteger(L, udata->bEndpointAddress);
 	return 1;
 }
 
@@ -658,16 +658,16 @@ static int luausb_set_endpoint_descriptor_bEndpointAddress(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bEndpointAddress (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bEndpointAddress (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bEndpointAddress = (uint8_t)value;
 	return 0;
 }
@@ -676,7 +676,7 @@ static int luausb_get_endpoint_descriptor_bmAttributes(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bmAttributes);
+	lua_pushinteger(L, udata->bmAttributes);
 	return 1;
 }
 
@@ -684,16 +684,16 @@ static int luausb_set_endpoint_descriptor_bmAttributes(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bmAttributes (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bmAttributes (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bmAttributes = (uint8_t)value;
 	return 0;
 }
@@ -702,7 +702,7 @@ static int luausb_get_endpoint_descriptor_wMaxPacketSize(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->wMaxPacketSize);
+	lua_pushinteger(L, udata->wMaxPacketSize);
 	return 1;
 }
 
@@ -710,16 +710,16 @@ static int luausb_set_endpoint_descriptor_wMaxPacketSize(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field wMaxPacketSize (number expected, got ");
+		lua_pushliteral(L, "invalid value for field wMaxPacketSize (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->wMaxPacketSize = (uint16_t)value;
 	return 0;
 }
@@ -728,7 +728,7 @@ static int luausb_get_endpoint_descriptor_bInterval(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bInterval);
+	lua_pushinteger(L, udata->bInterval);
 	return 1;
 }
 
@@ -736,16 +736,16 @@ static int luausb_set_endpoint_descriptor_bInterval(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bInterval (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bInterval (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bInterval = (uint8_t)value;
 	return 0;
 }
@@ -754,7 +754,7 @@ static int luausb_get_endpoint_descriptor_bRefresh(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bRefresh);
+	lua_pushinteger(L, udata->bRefresh);
 	return 1;
 }
 
@@ -762,16 +762,16 @@ static int luausb_set_endpoint_descriptor_bRefresh(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bRefresh (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bRefresh (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bRefresh = (uint8_t)value;
 	return 0;
 }
@@ -780,7 +780,7 @@ static int luausb_get_endpoint_descriptor_bSynchAddress(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	lua_pushnumber(L, udata->bSynchAddress);
+	lua_pushinteger(L, udata->bSynchAddress);
 	return 1;
 }
 
@@ -788,16 +788,16 @@ static int luausb_set_endpoint_descriptor_bSynchAddress(lua_State* L)
 {
 	struct libusb_endpoint_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bSynchAddress (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bSynchAddress (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_endpoint_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bSynchAddress = (uint8_t)value;
 	return 0;
 }
@@ -941,7 +941,7 @@ static int luausb_get_interface_descriptor_bLength(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bLength);
+	lua_pushinteger(L, udata->bLength);
 	return 1;
 }
 
@@ -949,16 +949,16 @@ static int luausb_set_interface_descriptor_bLength(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bLength (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bLength (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bLength = (uint8_t)value;
 	return 0;
 }
@@ -967,7 +967,7 @@ static int luausb_get_interface_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDescriptorType);
+	lua_pushinteger(L, udata->bDescriptorType);
 	return 1;
 }
 
@@ -975,16 +975,16 @@ static int luausb_set_interface_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDescriptorType (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDescriptorType (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDescriptorType = (uint8_t)value;
 	return 0;
 }
@@ -993,7 +993,7 @@ static int luausb_get_interface_descriptor_bInterfaceNumber(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bInterfaceNumber);
+	lua_pushinteger(L, udata->bInterfaceNumber);
 	return 1;
 }
 
@@ -1001,16 +1001,16 @@ static int luausb_set_interface_descriptor_bInterfaceNumber(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bInterfaceNumber (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bInterfaceNumber (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bInterfaceNumber = (uint8_t)value;
 	return 0;
 }
@@ -1019,7 +1019,7 @@ static int luausb_get_interface_descriptor_bAlternateSetting(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bAlternateSetting);
+	lua_pushinteger(L, udata->bAlternateSetting);
 	return 1;
 }
 
@@ -1027,16 +1027,16 @@ static int luausb_set_interface_descriptor_bAlternateSetting(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bAlternateSetting (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bAlternateSetting (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bAlternateSetting = (uint8_t)value;
 	return 0;
 }
@@ -1045,7 +1045,7 @@ static int luausb_get_interface_descriptor_bNumEndpoints(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bNumEndpoints);
+	lua_pushinteger(L, udata->bNumEndpoints);
 	return 1;
 }
 
@@ -1053,16 +1053,16 @@ static int luausb_set_interface_descriptor_bNumEndpoints(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bNumEndpoints (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bNumEndpoints (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bNumEndpoints = (uint8_t)value;
 	return 0;
 }
@@ -1071,7 +1071,7 @@ static int luausb_get_interface_descriptor_bInterfaceClass(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bInterfaceClass);
+	lua_pushinteger(L, udata->bInterfaceClass);
 	return 1;
 }
 
@@ -1079,16 +1079,16 @@ static int luausb_set_interface_descriptor_bInterfaceClass(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bInterfaceClass (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bInterfaceClass (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bInterfaceClass = (uint8_t)value;
 	return 0;
 }
@@ -1097,7 +1097,7 @@ static int luausb_get_interface_descriptor_bInterfaceSubClass(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bInterfaceSubClass);
+	lua_pushinteger(L, udata->bInterfaceSubClass);
 	return 1;
 }
 
@@ -1105,16 +1105,16 @@ static int luausb_set_interface_descriptor_bInterfaceSubClass(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bInterfaceSubClass (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bInterfaceSubClass (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bInterfaceSubClass = (uint8_t)value;
 	return 0;
 }
@@ -1123,7 +1123,7 @@ static int luausb_get_interface_descriptor_bInterfaceProtocol(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->bInterfaceProtocol);
+	lua_pushinteger(L, udata->bInterfaceProtocol);
 	return 1;
 }
 
@@ -1131,16 +1131,16 @@ static int luausb_set_interface_descriptor_bInterfaceProtocol(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bInterfaceProtocol (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bInterfaceProtocol (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bInterfaceProtocol = (uint8_t)value;
 	return 0;
 }
@@ -1149,7 +1149,7 @@ static int luausb_get_interface_descriptor_iInterface(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	udata = luausb_to_interface_descriptor(L, 1);
-	lua_pushnumber(L, udata->iInterface);
+	lua_pushinteger(L, udata->iInterface);
 	return 1;
 }
 
@@ -1157,16 +1157,16 @@ static int luausb_set_interface_descriptor_iInterface(lua_State* L)
 {
 	struct libusb_interface_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field iInterface (number expected, got ");
+		lua_pushliteral(L, "invalid value for field iInterface (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->iInterface = (uint8_t)value;
 	return 0;
 }
@@ -1317,7 +1317,7 @@ static int luausb_get_interface_num_altsetting(lua_State* L)
 {
 	struct libusb_interface* udata;
 	udata = luausb_to_interface(L, 1);
-	lua_pushnumber(L, udata->num_altsetting);
+	lua_pushinteger(L, udata->num_altsetting);
 	return 1;
 }
 
@@ -1325,16 +1325,16 @@ static int luausb_set_interface_num_altsetting(lua_State* L)
 {
 	struct libusb_interface* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field num_altsetting (number expected, got ");
+		lua_pushliteral(L, "invalid value for field num_altsetting (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_interface(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->num_altsetting = (int)value;
 	return 0;
 }
@@ -1426,7 +1426,7 @@ static int luausb_get_config_descriptor_bLength(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->bLength);
+	lua_pushinteger(L, udata->bLength);
 	return 1;
 }
 
@@ -1434,16 +1434,16 @@ static int luausb_set_config_descriptor_bLength(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bLength (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bLength (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bLength = (uint8_t)value;
 	return 0;
 }
@@ -1452,7 +1452,7 @@ static int luausb_get_config_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->bDescriptorType);
+	lua_pushinteger(L, udata->bDescriptorType);
 	return 1;
 }
 
@@ -1460,16 +1460,16 @@ static int luausb_set_config_descriptor_bDescriptorType(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bDescriptorType (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bDescriptorType (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bDescriptorType = (uint8_t)value;
 	return 0;
 }
@@ -1478,7 +1478,7 @@ static int luausb_get_config_descriptor_wTotalLength(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->wTotalLength);
+	lua_pushinteger(L, udata->wTotalLength);
 	return 1;
 }
 
@@ -1486,16 +1486,16 @@ static int luausb_set_config_descriptor_wTotalLength(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field wTotalLength (number expected, got ");
+		lua_pushliteral(L, "invalid value for field wTotalLength (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->wTotalLength = (uint16_t)value;
 	return 0;
 }
@@ -1504,7 +1504,7 @@ static int luausb_get_config_descriptor_bNumInterfaces(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->bNumInterfaces);
+	lua_pushinteger(L, udata->bNumInterfaces);
 	return 1;
 }
 
@@ -1512,16 +1512,16 @@ static int luausb_set_config_descriptor_bNumInterfaces(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bNumInterfaces (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bNumInterfaces (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bNumInterfaces = (uint8_t)value;
 	return 0;
 }
@@ -1530,7 +1530,7 @@ static int luausb_get_config_descriptor_bConfigurationValue(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->bConfigurationValue);
+	lua_pushinteger(L, udata->bConfigurationValue);
 	return 1;
 }
 
@@ -1538,16 +1538,16 @@ static int luausb_set_config_descriptor_bConfigurationValue(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bConfigurationValue (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bConfigurationValue (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bConfigurationValue = (uint8_t)value;
 	return 0;
 }
@@ -1556,7 +1556,7 @@ static int luausb_get_config_descriptor_iConfiguration(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->iConfiguration);
+	lua_pushinteger(L, udata->iConfiguration);
 	return 1;
 }
 
@@ -1564,16 +1564,16 @@ static int luausb_set_config_descriptor_iConfiguration(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field iConfiguration (number expected, got ");
+		lua_pushliteral(L, "invalid value for field iConfiguration (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->iConfiguration = (uint8_t)value;
 	return 0;
 }
@@ -1582,7 +1582,7 @@ static int luausb_get_config_descriptor_bmAttributes(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->bmAttributes);
+	lua_pushinteger(L, udata->bmAttributes);
 	return 1;
 }
 
@@ -1590,16 +1590,16 @@ static int luausb_set_config_descriptor_bmAttributes(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field bmAttributes (number expected, got ");
+		lua_pushliteral(L, "invalid value for field bmAttributes (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->bmAttributes = (uint8_t)value;
 	return 0;
 }
@@ -1608,7 +1608,7 @@ static int luausb_get_config_descriptor_MaxPower(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	udata = luausb_to_config_descriptor(L, 1);
-	lua_pushnumber(L, udata->MaxPower);
+	lua_pushinteger(L, udata->MaxPower);
 	return 1;
 }
 
@@ -1616,16 +1616,16 @@ static int luausb_set_config_descriptor_MaxPower(lua_State* L)
 {
 	struct libusb_config_descriptor* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field MaxPower (number expected, got ");
+		lua_pushliteral(L, "invalid value for field MaxPower (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_config_descriptor(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->MaxPower = (uint8_t)value;
 	return 0;
 }
@@ -1941,7 +1941,7 @@ static int luausb_get_transfer_flags(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->flags);
+	lua_pushinteger(L, udata->flags);
 	return 1;
 }
 
@@ -1949,16 +1949,16 @@ static int luausb_set_transfer_flags(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field flags (number expected, got ");
+		lua_pushliteral(L, "invalid value for field flags (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->flags = (uint8_t)value;
 	return 0;
 }
@@ -1967,7 +1967,7 @@ static int luausb_get_transfer_endpoint(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->endpoint);
+	lua_pushinteger(L, udata->endpoint);
 	return 1;
 }
 
@@ -1975,16 +1975,16 @@ static int luausb_set_transfer_endpoint(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field endpoint (number expected, got ");
+		lua_pushliteral(L, "invalid value for field endpoint (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->endpoint = (unsigned char)value;
 	return 0;
 }
@@ -1993,7 +1993,7 @@ static int luausb_get_transfer_type(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->type);
+	lua_pushinteger(L, udata->type);
 	return 1;
 }
 
@@ -2001,16 +2001,16 @@ static int luausb_set_transfer_type(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field type (number expected, got ");
+		lua_pushliteral(L, "invalid value for field type (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->type = (unsigned char)value;
 	return 0;
 }
@@ -2019,7 +2019,7 @@ static int luausb_get_transfer_timeout(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->timeout);
+	lua_pushinteger(L, udata->timeout);
 	return 1;
 }
 
@@ -2027,16 +2027,16 @@ static int luausb_set_transfer_timeout(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field timeout (number expected, got ");
+		lua_pushliteral(L, "invalid value for field timeout (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->timeout = (unsigned int)value;
 	return 0;
 }
@@ -2045,7 +2045,7 @@ static int luausb_get_transfer_status(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->status);
+	lua_pushinteger(L, udata->status);
 	return 1;
 }
 
@@ -2053,16 +2053,16 @@ static int luausb_set_transfer_status(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field status (number expected, got ");
+		lua_pushliteral(L, "invalid value for field status (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->status = (enum libusb_transfer_status)value;
 	return 0;
 }
@@ -2071,7 +2071,7 @@ static int luausb_get_transfer_actual_length(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	udata = luausb_to_transfer(L, 1);
-	lua_pushnumber(L, udata->actual_length);
+	lua_pushinteger(L, udata->actual_length);
 	return 1;
 }
 
@@ -2079,16 +2079,16 @@ static int luausb_set_transfer_actual_length(lua_State* L)
 {
 	struct libusb_transfer* udata;
 	lua_Number value;
-	if (!lua_isnumber(L, 2))
+	if (!lua_isinteger(L, 2))
 	{
-		lua_pushliteral(L, "invalid value for field actual_length (number expected, got ");
+		lua_pushliteral(L, "invalid value for field actual_length (integer expected, got ");
 		lua_pushstring(L, luaL_typename(L, 2));
 		lua_pushliteral(L, ")");
 		lua_concat(L, 3);
 		return lua_error(L);
 	}
 	udata = luausb_to_transfer(L, 1);
-	value = lua_tonumber(L, 2);
+	value = lua_tointeger(L, 2);
 	udata->actual_length = (int)value;
 	return 0;
 }
