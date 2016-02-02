@@ -152,6 +152,19 @@ BINDING(get_bus_number)
 	return 1;
 }
 
+BINDING(get_port_number)
+{
+	libusb_device* dev;
+	uint8_t result;
+	
+	dev = luausb_check_device(L, 1);
+	
+	result = libusb_get_port_number(dev);
+	
+	lua_pushnumber(L, result);
+	return 1;
+}
+
 BINDING(get_device_address)
 {
 	libusb_device* dev;
@@ -1244,6 +1257,7 @@ struct luaL_Reg libusb_device__metamethods[] = {
 */
 struct luaL_Reg libusb_device__methods[] = {
 	BIND(get_bus_number)
+	BIND(get_port_number)
 	BIND(get_device_address)
 	BIND(get_max_packet_size)
 	BIND(get_max_iso_packet_size)
