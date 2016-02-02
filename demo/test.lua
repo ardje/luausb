@@ -1,5 +1,4 @@
-require 'usb'
-require 'bit'
+local usb = require 'usb'
 
 local context = assert(usb.init())
 
