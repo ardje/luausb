@@ -19,3 +19,9 @@ void setfuncs(lua_State* L, const luaL_Reg* l, int nup);
 
 #endif
 
+#if LUA_VERSION_NUM<=502
+
+int lua_isinteger(lua_State *L, int index);
+
+#endif
+
