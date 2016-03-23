@@ -58,7 +58,7 @@ structs.c enums.c enums.h structs.h:gen.lua
 
 .PHONY:build clean cleandist pureinstall install
 
-# Copyright (c) 2010 Jérôme Vuarand
+# Copyright (c) Jérôme Vuarand
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
