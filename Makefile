@@ -3,8 +3,8 @@ LUA_VERSION?=5.3
 PREFIX?=/usr
 INSTALL_LUA=$(PREFIX)/share/lua/$(LUA_VERSION)
 INSTALL_BIN=$(PREFIX)/lib/lua/$(LUA_VERSION)
-CPPFLAGS=-Wall -Wextra -Werror -O2
-CFLAGS=-fvisibility=hidden
+CPPFLAGS+=-Wall -Wextra -Werror -O2
+CFLAGS+=-fvisibility=hidden
 
 CPPFLAGS+=-I/usr/include/libusb-1.0 "-DLUAUSB_API=__attribute__((visibility(\"default\")))"
 CFLAGS+=-fPIC
