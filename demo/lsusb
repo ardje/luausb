@@ -5,7 +5,26 @@ package.path = "demo/?.lua;"..package.path
 local usb = require 'usb'
 local names = require 'names'
 local bit
-if _VERSION == 'Lua 5.2' then
+if _VERSION == 'Lua 5.3' then
+	bit = {}
+	local chunk = assert(load([[
+		local select = ...
+		function band(a, ...)
+			for i=1,select('#', ...) do
+				a = a & select(i, ...)
+			end
+			return a
+		end
+		function bor(a, ...)
+			for i=1,select('#', ...) do
+				a = a | select(i, ...)
+			end
+			return a
+		end
+		function rshift(a, b) return a >> b end
+	]], 'bit', 't', bit))
+	chunk(select)
+elseif _VERSION == 'Lua 5.2' then
 	bit = require 'bit32'
 elseif _VERSION == 'Lua 5.1' then
 	bit = require 'bit'
