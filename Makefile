@@ -1,13 +1,3 @@
-ifeq ($(OS),)
-OS=$(shell uname)
-endif
-
-ifeq ($(OS),Windows_NT)
-DLLEXT=dll
-else
-DLLEXT=so
-endif
-
 LUA_VERSION?=5.3
 
 PREFIX?=/usr
@@ -16,40 +6,28 @@ INSTALL_BIN=$(PREFIX)/lib/lua/$(LUA_VERSION)
 CPPFLAGS=-Wall -Wextra -Werror -O2
 CFLAGS=-fvisibility=hidden
 
-ifeq ($(OS),Linux)
 CPPFLAGS+=-I/usr/include/libusb-1.0 "-DLUAUSB_API=__attribute__((visibility(\"default\")))"
 CFLAGS+=-fPIC
 LDLIBS+=-lusb-1.0
-endif
-ifeq ($(OS),Windows_NT)
-ifneq ($(LUA_VERSION),5.1)
-$(error only Lua 5.1 is supported on Windows)
-endif
-ARCH=32
-LIBUSB_DIR=./libusbx-1.0.14-win
-LUABIN_DIR=./lua5_1_4_Win$(ARCH)_dll8_lib
-CPPFLAGS+=-I$(LUABIN_DIR)/include -I$(LIBUSB_DIR)/include/libusbx-1.0 "-DLUAUSB_API=__declspec(dllexport)"
-LDLIBS+=-l:$(LUABIN_DIR)/lua5.1.dll -l:$(LIBUSB_DIR)/MinGW$(ARCH)/dll/libusb-1.0.dll
-endif
 
-build:usb.$(DLLEXT)
+build:usb.so
 
 clean:
-	rm -f usb.$(DLLEXT) *.o
+	rm -f usb.so *.o
 
 cleandist:clean
 	rm -f enums.c enums.h structs.c structs.h
 
 install:build
 	install -d $(INSTALL_BIN)
-	install *.$(DLLEXT) $(INSTALL_BIN)
+	install *.so $(INSTALL_BIN)
 
-usb.$(DLLEXT): CPPFLAGS+=-Dluaopen_module=luaopen_usb
+usb.so: CPPFLAGS+=-Dluaopen_module=luaopen_usb
 
-%.$(DLLEXT): %.c
+%.so: %.c
 	$(LINK.c) -shared $^ $(LOADLIBES) $(LDLIBS) -o $@
 
-usb.$(DLLEXT):enums.o structs.o compat.o
+usb.so:enums.o structs.o compat.o
 
 usb.c:enums.h structs.h
 
